@@ -1,7 +1,10 @@
 use std::{fmt::Write, time::SystemTime};
 
+use chrono::Datelike;
+
 fn main() {
-    let input = include_str!("../template.html");
+    let index_template = include_str!("../index_template.html");
+    let blog_template = include_str!("../blog_template.html");
     let mut blogs = vec![];
     for item in std::fs::read_dir("blogs").unwrap() {
         let item = item.unwrap();
@@ -30,7 +33,7 @@ fn main() {
     blogs.sort_by_key(|x| x.creation_date);
 
     let mut blogs_section = String::new();
-    for blog in blogs {
+    for (i, blog) in blogs.iter().enumerate() {
         let ident = &blog.ident;
         let title = blog.markdown.lines().next().unwrap_or("# Untitled");
         let title = title.split_once('#').unwrap().1;
@@ -38,7 +41,6 @@ fn main() {
         let read_time = {
             let word_count = blog.markdown.split_whitespace().count();
             let wpm = 200;
-            println!("{word_count}");
             word_count.div_ceil(wpm)
         };
 
@@ -70,10 +72,62 @@ fn main() {
                 </a>
             "
         );
+
+
+        // the blog's index.html
+        let html = markdown::to_html(blog.markdown.split_once('\n').unwrap().1);
+        let date = chrono::DateTime::<chrono::prelude::Utc>::from(blog.creation_date);
+        let month = match date.month() {
+            1  => "Jan",
+            2  => "Feb",
+            3  => "Mar",
+            4  => "Apr",
+            5  => "May",
+            6  => "Jun",
+            7  => "Jul",
+            8  => "Aug",
+            9  => "Sep",
+            10 => "Oct",
+            11 => "Nov",
+            12 => "Dec",
+            _ => unreachable!(),
+
+        };
+
+        let mut nav = String::new();
+        nav.push_str("<nav class=\"post-nav\">");
+
+        if i != 0 {
+            let next_post = &blogs[i-1].ident;
+            let _ = write!(nav, "<a class=\"prev\" href=\"../{next_post}/index.html\">← Next Post</a>");
+        } else {
+            nav.push_str("<div></div>");
+        }
+
+        let _ = write!(nav, "<a class=\"home\" href=\"../../../index.html\">Home</a>");
+
+        if i+1 < blogs.len() {
+            let prev_post = &blogs[i+1].ident;
+            let _ = write!(nav, "<a class=\"next\" href=\"../{prev_post}/index.html\">Previous Post →</a>");
+        } else {
+            nav.push_str("<div></div>");
+        }
+
+        nav.push_str("</nav>");
+
+        let template = blog_template
+            .replace("<!-- expand-date -->", &format!("{} {}", month, date.day()))
+            .replace("<!-- expand-nav -->", &nav)
+            .replace("<!-- expand-title -->", &title)
+            .replace("<!-- expand-read-time -->", &read_time.to_string())
+            .replace("<!-- expand-body -->", &html);
+
+        std::fs::write(format!("blogs/{ident}/index.html"), template).unwrap();
+
     }
 
 
-    let output = input.replace("<!-- expand-blogs -->", &blogs_section);
+    let output = index_template.replace("<!-- expand-blogs -->", &blogs_section);
     std::fs::write("index.html", output).unwrap();
 
 }
