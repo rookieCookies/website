@@ -19,6 +19,7 @@ body {
 html, body {
     margin: 0rem;
     padding: 0rem;
+    background: var(--color-bg);
     height: 100%;
 }
 
