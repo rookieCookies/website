@@ -6,7 +6,7 @@ function startIdleTimer() {
     clearTimeout(idleTimer);
     idleTimer = setTimeout(() => {
         updateArrowVisibility()
-    }, 5000); // 15000ms = 15 seconds
+    }, 250); // 15000ms = 15 seconds
 }
 
 
