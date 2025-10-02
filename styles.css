@@ -114,12 +114,9 @@ hr {
 .blogs-section {
     padding-bottom: 1rem;
     overflow-y: visible; /* allow cards to move up */
-
-    -webkit-scrollbar-width: none;
-    scrollbar-width: none;
 }
 
-.blogs-section::-webkit-scrollbar {
+.blogs-section section::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */
 }
 
@@ -135,6 +132,9 @@ hr {
     scroll-padding-inline: 1rem;
     padding-inline: 1rem;
     padding-top: 3rem;
+    padding-bottom: 1rem;
+    -webkit-scrollbar-width: none;
+    scrollbar-width: none;
 }
 
 .blogs-container {
@@ -146,7 +146,7 @@ hr {
 .blog-card {
   all: unset;
   flex: 0 0 19rem;
-  height: 22.5rem;
+  height: 22.75rem;
   background-color: var(--color-dark);
   border-radius: 0.5rem;
   align-items: center;
