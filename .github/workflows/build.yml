@@ -20,7 +20,7 @@ jobs:
         override: true
 
     - name: Build index.html
-      working-directory: ./generate-scripts
+      working-directory: ./generate-blogs
       run: cargo run --release
 
     - name: Deploy to GitHub Pages
