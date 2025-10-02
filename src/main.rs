@@ -64,7 +64,7 @@ fn main() {
         let _ = writeln!(
             &mut blogs_section,
             "
-                <a class=\"blog-card\" href=\"blogs//{ident}/index.html\">
+                <a class=\"blog-card\" href=\"blogs/{ident}/index.html\">
                     <img src=\"{thumbnail}\" alt=\"Blog Image\">
                     <h2>{title}</h2>
                     <h3>{read_time} min. read</h3>
