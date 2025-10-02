@@ -141,6 +141,7 @@ hr {
     padding-bottom: 1rem;
     -webkit-scrollbar-width: none;
     scrollbar-width: none;
+    background-color: var(--color-bg);
 }
 
 .blogs-container {
