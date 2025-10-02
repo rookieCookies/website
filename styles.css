@@ -10,7 +10,12 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--color-bg);
     color: var(--color-text);
+}
 
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 
@@ -36,7 +41,7 @@ hr {
 }
 .hero p {
     font-size: 1.25rem;
-    margin-bottom: -0rem;
+    margin-bottom: 0rem;
     max-width: 32rem;
 
     font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -65,7 +70,7 @@ hr {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 0.25rem;
 }
 
 .social-bar a {
@@ -152,9 +157,10 @@ hr {
   align-items: center;
   justify-content: center;
   white-space: wrap;
-  /*overflow: hidden;*/
+  overflow: hidden;
   padding: 0.75rem;
   transition: opacity 0.2s, transform 0.3s;
+
 }
 
 .blog-card:hover {
@@ -186,7 +192,7 @@ hr {
 
 .blog-card h3 {
     font-size: 0.7rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.6rem;
     color: var(--color-accent);
 }
 
