@@ -17,7 +17,7 @@ body {
 }
 
 html, body {
-    margin: 0rem;
+    margin: 1rem;
     padding: 0rem;
     background: var(--color-bg);
     height: 100%;
