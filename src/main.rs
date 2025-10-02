@@ -94,30 +94,9 @@ fn main() {
 
         };
 
-        let mut nav = String::new();
-        nav.push_str("<nav class=\"post-nav\">");
-
-        if i != 0 {
-            let next_post = &blogs[i-1].ident;
-            let _ = write!(nav, "<a class=\"prev\" href=\"../{next_post}/index.html\">← Next Post</a>");
-        } else {
-            nav.push_str("<div></div>");
-        }
-
-        let _ = write!(nav, "<a class=\"home\" href=\"../../../index.html\">Home</a>");
-
-        if i+1 < blogs.len() {
-            let prev_post = &blogs[i+1].ident;
-            let _ = write!(nav, "<a class=\"next\" href=\"../{prev_post}/index.html\">Previous Post →</a>");
-        } else {
-            nav.push_str("<div></div>");
-        }
-
-        nav.push_str("</nav>");
 
         let template = blog_template
             .replace("<!-- expand-date -->", &format!("{} {}", month, date.day()))
-            .replace("<!-- expand-nav -->", &nav)
             .replace("<!-- expand-title -->", &title)
             .replace("<!-- expand-read-time -->", &read_time.to_string())
             .replace("<!-- expand-body -->", &html);
