@@ -20,11 +20,11 @@ jobs:
         override: true
 
     - name: Build index.html
-      working-directory: ./generate-scripts   # <-- important
-      run: cargo run --release                # runs your Rust program
+      working-directory: ./generate-blogs
+      run: cargo run --release
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./                        # deploy from repo root (where index.html is)
+        publish_dir: ./
