@@ -76,6 +76,7 @@ footer {
   position: absolute;             /* remove from flow */
   left: 50%;
   transform: translateX(-50%);    /* perfectly center */
+  padding-bottom: 1rem;
 }
 
 .post-nav a {
