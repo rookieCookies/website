@@ -3,13 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Projects, Blogs, & more - daymare.net</title>
+    <meta name="description" content="Explore my personal projects, technical blogs, and creative coding experiments at daymare.net.">
+    <meta name="keywords" content="Todaymare, daymare, personal projects, coding blogs, rust development, compiler design, compiler development, ">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
     <script src="index.js" defer></script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Todaymare",
+        "url": "https://daymare.net",
+        "sameAs": [
+            "https://github.com/todaymare",
+            "https://youtube.com/@Todaymare"
+        ]
+    }
+    </script>
 </head>
 <body>
     <header class="hero">
+        <!-- SEO-friendly heading, hidden visually but readable by search engines and screen readers -->
+        <h1 class="sr-only">Todaymare - daymare.net – Personal Projects, Blogs & Coding Experiments</h1>
+
+        <p class="hero-title">hi there</p>
         <h1>hi there</h1>
         <p><i>come see what i've been making</i></p>
         <hr>
@@ -27,7 +46,7 @@
     </div>
 
     <div class="blogs-section" aria-labelledby="blogs-title">
-        <h1 class="section-title">Blogs</h1>
+        <h2 class="section-title">Blogs</h2>
         <section>
             <div class="blogs-container">
                 <!-- expand-blogs -->

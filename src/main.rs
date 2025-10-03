@@ -1,6 +1,6 @@
 use std::{fmt::Write, time::SystemTime};
 
-use chrono::Datelike;
+use chrono::{format, Datelike};
 
 fn main() {
     let index_template = include_str!("../index_template.html");
@@ -36,7 +36,7 @@ fn main() {
     for (i, blog) in blogs.iter().enumerate() {
         let ident = &blog.ident;
         let title = blog.markdown.lines().next().unwrap_or("# Untitled");
-        let title = title.split_once('#').unwrap().1;
+        let title = title.split_once('#').unwrap().1.trim();
 
         let read_time = {
             let word_count = blog.markdown.split_whitespace().count();
@@ -44,31 +44,31 @@ fn main() {
             word_count.div_ceil(wpm)
         };
 
-        let mut html = String::new();
+        let mut description = String::new();
 
         for line in blog.markdown.lines().skip(1) {
-            html.push_str(line);
+            description.push_str(line);
             if line.ends_with('\\') && !line.ends_with("\\\\") {
-                html.pop();
+                description.pop();
                 continue;
             }
             break;
         }
 
-        let html = markdown::to_html(&html);
+        let description_html = markdown::to_html(&description);
         let thumbnail = format!("blogs/{}/thumbnail.png", blog.ident);
         let thumbnail = if std::fs::exists(&thumbnail).unwrap() { thumbnail.as_str() }
                         else { "https://placehold.co/1900x1600" };
 
-
+        let path = format!("blogs/{ident}");
         let _ = writeln!(
             &mut blogs_section,
             "
-                <a class=\"blog-card\" href=\"blogs/{ident}/index.html\">
+                <a class=\"blog-card\" href=\"{path}\">
                     <img src=\"{thumbnail}\" alt=\"Blog Image\">
-                    <h2>{title}</h2>
-                    <h3>{read_time} min. read</h3>
-                    <p>{html}</p>
+                    <h3>{title}</h3>
+                    <h4>{read_time} min. read</h4>
+                    <p>{description_html}</p>
                 </a>
             "
         );
@@ -97,8 +97,11 @@ fn main() {
 
         let template = blog_template
             .replace("<!-- expand-date -->", &format!("{} {}", month, date.day()))
+            .replace("<!-- expand-iso-date -->", &format!("{}", date.format("%Y-%m-%dT%H:%M:%S%.fZ")))
             .replace("<!-- expand-title -->", &title)
             .replace("<!-- expand-read-time -->", &read_time.to_string())
+            .replace("<!-- expand-description -->", &description)
+            .replace("<!-- expand-path -->", &path)
             .replace("<!-- expand-body -->", &html);
 
         std::fs::write(format!("blogs/{ident}/index.html"), template).unwrap();
