@@ -175,7 +175,7 @@ hr {
 .blog-card {
   all: unset;
   flex: 0 0 19rem;
-  height: 22.45rem;
+  height: 22.5rem;
   background-color: var(--color-dark);
   border-radius: 0.5rem;
   align-items: center;
@@ -231,7 +231,7 @@ hr {
   line-clamp: 3; /* standard property for compatibility */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin: 0rem 0;
+  margin-bottom: -1rem;
 }
 
 footer {
