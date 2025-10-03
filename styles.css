@@ -217,7 +217,6 @@ hr {
 
 .blog-card h4 {
     font-size: 0.7rem;
-    margin-bottom: 0.8rem;
     color: var(--color-accent);
 }
 
@@ -232,7 +231,7 @@ hr {
   line-clamp: 3; /* standard property for compatibility */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin: 0.25rem 0;
+  margin: 0rem 0;
 }
 
 footer {
