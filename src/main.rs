@@ -17,7 +17,7 @@ fn main() {
         }
 
         let index = item.path().join("index.md");
-        let created = std::fs::metadata(&index).unwrap().modified().unwrap();
+        let created = std::fs::metadata(item.path().join("thumbnail.png")).map(|x| x.created().unwrap()).unwrap_or(SystemTime::now());
         let index = std::fs::read_to_string(index).unwrap();
 
         std::fs::write(&format!("blogs/{name}/index.html"), markdown::to_html(&index)).unwrap();
