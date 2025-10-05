@@ -202,6 +202,17 @@ hr {
   cursor: pointer;
 }
 
+.blog-card .titlecard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: 0.95rem; /* adjust based on your design */
+    width: 99%;
+    overflow: hidden;
+    margin-bottom: -0.8rem;
+}
+
 .blog-card h3 {
     font-size: 0.95rem;
     color: var(--color-text);
@@ -209,6 +220,11 @@ hr {
     margin-top: -0.15rem;
 
     cursor: pointer;
+
+    -webkit-line-clamp: 1; /* number of lines */
+    line-clamp: 1; /* standard property for compatibility */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 .blog-card h3:hover {
   text-decoration: underline;

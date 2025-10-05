@@ -66,7 +66,7 @@ fn main() {
             "
                 <a class=\"blog-card\" href=\"{path}\">
                     <img src=\"{thumbnail}\" alt=\"Blog Image\">
-                    <h3>{title}</h3>
+                    <span class=\"titlecard\"><h3>{title}</h3></span>
                     <h4>{read_time} min. read</h4>
                     <p>{description_html}</p>
                 </a>
