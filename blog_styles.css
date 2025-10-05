@@ -22,13 +22,20 @@ html, body {
     height: 100%;
 }
 
-
+/* Default style */
 .text-body {
     max-width: 40rem;
     margin: 0 auto;
     padding: 0;
 }
 
+/* When viewport is at least 50rem wide */
+@media (min-width: 80rem) {
+    .text-body {
+        max-width: 70rem; /* or whatever you want for large screens */
+        width: 50%;
+    }
+}
 
 .text-body img {
     width: 100%;
