@@ -23,7 +23,7 @@
                 "url": "https://daymare.net/logo.png"
                 }
             },
-            "datePublished": "2025-10-05T08:40:35.779337117Z",
+            "datePublished": "2025-10-05T10:13:40.522941776Z",
             "url": "https://daymare.net/blogs/four-years-five-failures-one-compiler/",
             "description": "At 14, I thought writing a compiler would be a quick side quest in building a game engine. Four years later, I finally built one that works. And it was one hell of a journey."
         }
@@ -51,7 +51,7 @@
 
 
     <div class="meta" itemscope itemtype="https://schema.org/BlogPosting">
-        <span><time itemprop="datePublished" datetime="2025-10-05T08:40:35.779337117Z">Oct 5</time> | <span itemprop="author">by me</span></span>
+        <span><time itemprop="datePublished" datetime="2025-10-05T10:13:40.522941776Z">Oct 5</time> | <span itemprop="author">by me</span></span>
         <span class="read-time">8 min. read</span>
     </div>
     
@@ -92,7 +92,7 @@ The interpreter is an abomination of Rust code, and it's also where you can clea
 </code></pre>
 <p>Which is, apparently, a non-clone, manual version of a reference-counted value?<br />
 Not a clue who wrote that code; definitely wasn't me!<br />
-For non-Rustaceans: this is me fighting the language's safety system and losing badly.</p>
+For non-Rust users: this is me fighting the language's safety system and losing badly.</p>
 <p>I have no idea where this was needed, but it might be one of the worst pieces of Rust code I've ever written, second only to the <em>Crytex</em> engine.</p>
 <p>That one doesn't even compile anymore, by the way, because newer Rust versions prevent casting an immutable reference to a mutable one. (Which, fun fact, is undefined behaviour)</p>
 <p>Oh, and apparently, I was passing around the main context of the interpreter as a mutable pointer. Those of you who use languages like C or C++ might think &quot;so what? that's normal&quot;, but in Rust, using pointers mixed with references comes with quite a bit more headache.</p>

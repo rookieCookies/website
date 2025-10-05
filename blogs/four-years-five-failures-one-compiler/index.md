@@ -38,7 +38,7 @@ struct VariableReference {
 ```
 Which is, apparently, a non-clone, manual version of a reference-counted value?  
 Not a clue who wrote that code; definitely wasn't me!  
-For non-Rustaceans: this is me fighting the language's safety system and losing badly. 
+For non-Rust users: this is me fighting the language's safety system and losing badly. 
 
 I have no idea where this was needed, but it might be one of the worst pieces of Rust code I've ever written, second only to the *Crytex* engine.
 
