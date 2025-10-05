@@ -77,8 +77,6 @@ footer {
 }
 
 .post-nav {
-  left: 0;
-  right: 0;
   display: flex;
   justify-content: space-between;
   max-width: 40rem; /* match your text-body */
@@ -102,4 +100,25 @@ footer {
 .post-nav a:hover {
   color: var(--color-text);
   text-decoration: underline;
+}
+
+
+pre {
+  overflow-x: auto;
+  white-space: pre;
+}
+
+code {
+  display: block;
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+pre::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
