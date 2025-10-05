@@ -41,6 +41,18 @@ html, body {
     object-position: center;  /* crop from the middle */
 }
 
+.text-body a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+
+.text-body a:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+}
+
 .meta {
     display: flex;
     justify-content: space-between; /* pushes first child left, last child right */

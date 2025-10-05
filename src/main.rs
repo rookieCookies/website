@@ -1,6 +1,6 @@
 use std::{fmt::Write, time::SystemTime};
 
-use chrono::{format, Datelike};
+use chrono::Datelike;
 
 fn main() {
     let index_template = include_str!("../index_template.html");
@@ -16,8 +16,8 @@ fn main() {
             continue;
         }
 
-        let created = metadata.created().unwrap();
         let index = item.path().join("index.md");
+        let created = std::fs::metadata(&index).unwrap().modified().unwrap();
         let index = std::fs::read_to_string(index).unwrap();
 
         std::fs::write(&format!("blogs/{name}/index.html"), markdown::to_html(&index)).unwrap();
@@ -33,7 +33,7 @@ fn main() {
     blogs.sort_by_key(|x| x.creation_date);
 
     let mut blogs_section = String::new();
-    for (i, blog) in blogs.iter().enumerate() {
+    for (i, blog) in blogs.iter().enumerate().rev() {
         let ident = &blog.ident;
         let title = blog.markdown.lines().next().unwrap_or("# Untitled");
         let title = title.split_once('#').unwrap().1.trim();
