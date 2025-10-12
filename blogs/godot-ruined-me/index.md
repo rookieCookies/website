@@ -179,4 +179,6 @@ But what I can say is that thanks to this experience I am a lot more hesitant wh
 
 What's next for the voxel engine? Well, I might remake it in [my programming language](https://github.com/todaymare/margarine). That one also has a great story which I talked about in [this blog post](../four-years-five-failures-one-compiler/)
 
+For those who may want to check out the source code for the final version of the game [here you go](https://github.com/todaymare/factory-game)
+
 Maybe there's a conclusion to draw from this story, in any case I hope you enjoyed it.  
