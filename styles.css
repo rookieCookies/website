@@ -152,6 +152,7 @@ hr {
     margin-bottom: 0.0rem;
     margin-top: 0rem;
     font-family: 'Dancing Script', cursive;
+    text-wrap: nowrap;
 }
 
 .blogs-section section {
@@ -220,7 +221,9 @@ hr {
     margin-top: 0rem;
 
     cursor: pointer;
+    text-wrap: nowrap;
 }
+
 .blog-card h3:hover {
   text-decoration: underline;
   text-decoration-thickness: 0.125rem;

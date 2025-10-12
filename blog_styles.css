@@ -38,14 +38,21 @@ html, body {
     }
 }
 
-.text-body img {
+
+.text-body .thumbnail {
     width: 100%;
     max-height: 30vh;
+    object-fit: cover;        /* crop instead of squish */
+}
+
+.text-body img {
     border-radius: 0.5rem;
     margin-top: 1rem;
     display: block;
+    width: 100%;              /* scale to fit container */
+    max-height: 50vh;
 
-    object-fit: cover;        /* crop instead of squish */
+    object-fit: contain;
     object-position: center;  /* crop from the middle */
 }
 

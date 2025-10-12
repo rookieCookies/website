@@ -1,4 +1,4 @@
-# Four years, Five failures, One compiler - The journey
+# Four years, Five failures, One compiler
 At 14, I thought writing a compiler would be a quick side quest in building a game engine. Four years later, I finally built one that works. And it was one hell of a journey.
 
 Before I dive into the compilers themselves, I should explain why I even started making them in the first place. Initially, writing a programming language wasn't the goal; it was just supposed to be a small part of a bigger piece: building my own game engine. I didn't expect that "small part" to turn into a four-year rabbit hole, but now that you know why it all started, let's look at a few of the failed projects, shall we?
