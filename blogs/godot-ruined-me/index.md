@@ -180,8 +180,6 @@ I thought I was writing about slow code, but looking back, I was really writing 
 
 After going cold-turkey on abstractions, I realized something worse than inefficiency: bloat. It turns out working in a simple, honest codebase – one where you see everything – is just more fun.
 
-What's next for the voxel engine? Well, I might remake it in [my programming language](https://github.com/todaymare/margarine). That one also has a great story which I talked about in [this blog post](../four-years-five-failures-one-compiler/)
-
 For those who may want to check out the source code for the final version of the game [here you go](https://github.com/todaymare/factory-game)
 
 Maybe there's a conclusion to draw from this story, in any case I hope you enjoyed it.  
