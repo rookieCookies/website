@@ -91,8 +91,7 @@ Suddenly I had mining. Machines. Inserters. Belts. Quarries. Crafting.</p>
 It might sound like I'm glossing over the implementation, but the entire prototype took literally two days.</p>
 <p><img src="assets/prototype.png" alt="An image of the prototype" /></p>
 <p>I had so many conversations about how the quarry should work with my friends. It was an interesting design problem: finding upgrades for quarries that weren't just &quot;the same thing, but faster&quot;, especially since the quarries were meant to dig into the world and destroy it.</p>
-<p>That also turned quarries into a single-pipe problem — where common resources clog the system and starve rarer ones. Totally irrelevant for this prototype though, since items were just physics bodies moving on top of belts.<br />
-So uh, I don’t know why I went on this side-tangent.</p>
+<p>That also turned quarries into a single-pipe problem — where common resources clog the system and starve rarer ones. Totally irrelevant for this prototype though, since items were just physics bodies moving on top of belts.</p>
 <p>Anyways, I was ready. I had spent roughly 32 hours over 2 days working on the first prototype of my life. I went outside to grab some food, came back, and even arranged a play-test for the next day.</p>
 <p>Everything was perfect.<br />
 The engine worked. The game ran smoothly – until it didn't.</p>
@@ -101,7 +100,7 @@ The engine worked. The game ran smoothly – until it didn't.</p>
 But see, I never tried throwing more quarries at it because I assumed any slow-down would come from the naturally expensive thing – the rigidbodies that I used for items.</p>
 <p>In order for this to make sense I need to show you how procedurally generating a chunk goes in Godot.</p>
 <p>A chunk is just a mesh made of triangles made of vertices.
-In the simplest voxel engines, you’d generate a quad for every block — slow, but simple.
+In the simplest voxel engines, you’d generate a quad for every block face — slow, but simple.
 For the prototype, I added a very naive culling algorithm so it wouldn’t generate hidden faces.</p>
 <p>So far so good. This entire algorithm was implemented in Rust (<em>blazing fast!</em>).</p>
 <p>Godot exposes a type called <a href="https://docs.godotengine.org/en/stable/classes/class_surfacetool.html">SurfaceTool</a>, which isn't technically the lowest-level API they provide but it is pretty much a drop-in replacement for pushing individual vertices into a list.</p>
@@ -189,8 +188,11 @@ I went on a 3 week journey to optimize the heck out of the voxel engine, during 
 <p><img src="assets/voxel-engine.png" alt="Voxel Engine Picture" /></p>
 <h1>The conclusion?</h1>
 <p>I can't say this story has a very good conclusion because the game never ended up getting finished. Mostly because I couldn't figure out a way to make a factory game feel nice to play in a 3D voxel sandbox.</p>
-<p>But what I can say is that thanks to this experience I am a lot more hesitant whenever I get the urge to reach for an abstraction, because to be honest it is much more enjoyable to work in a codebase that isn't bloated with abstractions.</p>
+<p>What I learned from all this wasn’t really about Godot or performance – it was about trust. Or the lack of it.</p>
+<p>I thought I was writing about slow code, but looking back, I was really writing about black boxes I couldn’t see inside.</p>
+<p>After going cold-turkey on abstractions, I realized something worse than inefficiency: bloat. It turns out working in a simple, honest codebase – one where you see everything – is just more fun.</p>
 <p>What's next for the voxel engine? Well, I might remake it in <a href="https://github.com/todaymare/margarine">my programming language</a>. That one also has a great story which I talked about in <a href="../four-years-five-failures-one-compiler/">this blog post</a></p>
+<p>For those who may want to check out the source code for the final version of the game <a href="https://github.com/todaymare/factory-game">here you go</a></p>
 <p>Maybe there's a conclusion to draw from this story, in any case I hope you enjoyed it.</p>
         </article>
     </main>

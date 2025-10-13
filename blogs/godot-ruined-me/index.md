@@ -37,7 +37,6 @@ It might sound like I'm glossing over the implementation, but the entire prototy
 I had so many conversations about how the quarry should work with my friends. It was an interesting design problem: finding upgrades for quarries that weren't just "the same thing, but faster", especially since the quarries were meant to dig into the world and destroy it.  
 
 That also turned quarries into a single-pipe problem — where common resources clog the system and starve rarer ones. Totally irrelevant for this prototype though, since items were just physics bodies moving on top of belts.   
-So uh, I don’t know why I went on this side-tangent.  
 
 Anyways, I was ready. I had spent roughly 32 hours over 2 days working on the first prototype of my life. I went outside to grab some food, came back, and even arranged a play-test for the next day.
 
@@ -175,7 +174,11 @@ I might make a post on how I optimized the voxel engine ([check out this video b
 # The conclusion?
 I can't say this story has a very good conclusion because the game never ended up getting finished. Mostly because I couldn't figure out a way to make a factory game feel nice to play in a 3D voxel sandbox.  
 
-But what I can say is that thanks to this experience I am a lot more hesitant whenever I get the urge to reach for an abstraction, because to be honest it is much more enjoyable to work in a codebase that isn't bloated with abstractions.  
+What I learned from all this wasn’t really about Godot or performance – it was about trust. Or the lack of it.
+
+I thought I was writing about slow code, but looking back, I was really writing about black boxes I couldn’t see inside.
+
+After going cold-turkey on abstractions, I realized something worse than inefficiency: bloat. It turns out working in a simple, honest codebase – one where you see everything – is just more fun.
 
 What's next for the voxel engine? Well, I might remake it in [my programming language](https://github.com/todaymare/margarine). That one also has a great story which I talked about in [this blog post](../four-years-five-failures-one-compiler/)
 
