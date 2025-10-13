@@ -51,7 +51,7 @@ But see, I never tried throwing more quarries at it because I assumed any slow-d
 In order for this to make sense I need to show you how procedurally generating a chunk goes in Godot.  
 
 A chunk is just a mesh made of triangles made of vertices.
-In the simplest voxel engines, you’d generate a quad for every block — slow, but simple.
+In the simplest voxel engines, you’d generate a quad for every block face — slow, but simple.
 For the prototype, I added a very naive culling algorithm so it wouldn’t generate hidden faces.
 
 So far so good. This entire algorithm was implemented in Rust (*blazing fast!*).
