@@ -23,7 +23,7 @@ You don’t just learn the crate – you convert to its religion.
 Want to do something slightly off-script?  
 That’ll be three trait bounds, one custom derive, and a spiritual journey through `src/internal/utils/mod.rs`
 
-You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, a floor mat will do just fine.
+You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, a shed is fine.
 
 Take `glam`, for example, which doesn’t try to solve philosophy – it just does math. You don’t need a PhD in generics to understand what `Vec3::normalize()` does, and that’s exactly the point.  
 
@@ -49,7 +49,7 @@ Let's get one thing straight: over-engineering in Rust is incredibly fun. The la
 
 And hey, when you can push the boundaries of abstractions and keep things fast? It feels like you've cracked the code to the universe.
 
-But here's the problem: Most people just want to see what the code does, not spelunk through an art installation of traits.
+But still; most people just want to see what the code does, not spelunk through an art installation of traits.
 
 The core problem is that Rust being Rust turns code you can’t understand into the default.
 The community shows up to tell you that if you don’t over-complicate it, you’re writing unidiomatic Rust.

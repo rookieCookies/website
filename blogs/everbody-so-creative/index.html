@@ -79,7 +79,7 @@ Maybe you reach for <code>bevy</code>, or <code>wgpu</code>, or some other libra
 <p>You don’t just learn the crate – you convert to its religion.</p>
 <p>Want to do something slightly off-script?<br />
 That’ll be three trait bounds, one custom derive, and a spiritual journey through <code>src/internal/utils/mod.rs</code></p>
-<p>You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, a floor mat will do just fine.</p>
+<p>You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, a shed is fine.</p>
 <p>Take <code>glam</code>, for example, which doesn’t try to solve philosophy – it just does math. You don’t need a PhD in generics to understand what <code>Vec3::normalize()</code> does, and that’s exactly the point.</p>
 <p>But the thing is – <code>nalgebra</code> isn't an isolated example. It’s cultural.</p>
 <p>And that’s the real cost of abstraction – it makes the ceiling higher, but it also makes the floor invisible. (Shakespeare got nothin’ on me)</p>
@@ -93,7 +93,7 @@ You start thinking, &quot;Well, maybe I should make this generic in case someone
 <p>That phrasing sounds harsh, but the thing is: neither side is wrong.</p>
 <p>Let's get one thing straight: over-engineering in Rust is incredibly fun. The language hands you these shiny tools and it's hard not to play with them. It's like LEGO for programmers.</p>
 <p>And hey, when you can push the boundaries of abstractions and keep things fast? It feels like you've cracked the code to the universe.</p>
-<p>But here's the problem: Most people just want to see what the code does, not spelunk through an art installation of traits.</p>
+<p>But still; most people just want to see what the code does, not spelunk through an art installation of traits.</p>
 <p>The core problem is that Rust being Rust turns code you can’t understand into the default.
 The community shows up to tell you that if you don’t over-complicate it, you’re writing unidiomatic Rust.</p>
 <p>If &quot;Go to Definition&quot; can’t take me to your implementation and I have to dig through your GitHub repo just to see how Matrix4::mul works – can I really say I know the code I’m using?</p>
