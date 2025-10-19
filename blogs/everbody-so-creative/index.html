@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Everybody's so Creative! – daymare.net</title>
+    <link rel="stylesheet" href="../../blog_styles.css">
+    <link rel="preload" as="image" href="./thumbnail.png">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Everybody's so Creative!",
+            "image": "https://daymare.net/blogs/everbody-so-creative/thumbnail.png",
+            "author": {
+                "@type": "Person",
+                "name": "Todaymare"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "daymare.net",
+                "logo": {
+                "@type": "ImageObject",
+                "url": "https://daymare.net/logo.png"
+                }
+            },
+            "datePublished": "2025-10-19T08:39:24.740553972Z",
+            "url": "https://daymare.net/blogs/everbody-so-creative/",
+            "description": "After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction."
+        }
+    </script>
+    <script defer data-domain="daymare.net" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+    <div class="text-body">
+
+    <meta name="description" content="After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.">
+    <meta name="author" content="Todaymare">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Everybody's so Creative!">
+    <meta property="og:description" content="After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://daymare.net/blogs/everbody-so-creative/">
+    <meta property="og:image" content="https://daymare.net/blogs/everbody-so-creative/thumbnail.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Everybody's so Creative!">
+    <meta name="twitter:description" content="After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.">
+    <meta name="twitter:image" content="https://daymare.net/blogs/everbody-so-creative/thumbnail.png">
+
+    <link rel="canonical" href="https://daymare.net/blogs/everbody-so-creative/">
+
+
+    <div class="meta" itemscope itemtype="https://schema.org/BlogPosting">
+        <span><time itemprop="datePublished" datetime="2025-10-19T08:39:24.740553972Z">Oct 19</time> | <span itemprop="author">by me</span></span>
+        <span class="read-time">6 min. read</span>
+    </div>
+    
+
+    <img loading="eager" class="thumbnail" src="./thumbnail.png" alt="Thumbnail for Everybody's so Creative! blog post" />
+
+    <header>
+        <h1>Everybody's so Creative!</h1>
+    </header>
+
+    <main>
+        <article>
+            <p>After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.</p>
+<p>Hi, it’s me again. Back at it with another rant thinly disguised as a &quot;think piece.&quot;</p>
+<h2>The Question Nobody Wants to Answer</h2>
+<p>Have you ever wanted to build something simple in Rust?
+Maybe you reach for <code>bevy</code>, or <code>wgpu</code>, or some other library that promises everything you didn't ask for.</p>
+<p>And then you hit that moment – you're debugging, you hit &quot;Go to Definition&quot;, and suddenly you're free falling through ten layers of traits, macros, and generics just to figure out how a buffer updates.</p>
+<p>If that sounds familiar, congratulations: you've met Rust's favourite pastime – abstraction as performance art.</p>
+<h2>Why Are We Like This?</h2>
+<p>I get it – abstractions are cool. They’re supposed to hide complexity so we can focus on cooler stuff. And Rust loves that idea. Traits, generics, lifetimes – layer upon layer of &quot;don’t worry about it honey.&quot;</p>
+<p>Take <code>nalgebra</code>. Fantastic crate – powerful, flexible, and deeply overqualified for 90% of use cases.</p>
+<p>It’s not that I hate nalgebra – it’s brilliant. I just hate that this kind of maximalism has become the default.</p>
+<p>You don’t just learn the crate – you convert to its religion.</p>
+<p>Want to do something slightly off-script?<br />
+That’ll be three trait bounds, one custom derive, and a spiritual journey through <code>src/internal/utils/mod.rs</code></p>
+<p>You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, a floor mat will do just fine.</p>
+<p>Take <code>glam</code>, for example, which doesn’t try to solve philosophy – it just does math. You don’t need a PhD in generics to understand what <code>Vec3::normalize()</code> does, and that’s exactly the point.</p>
+<p>But the thing is – <code>nalgebra</code> isn't an isolated example. It’s cultural.</p>
+<p>And that’s the real cost of abstraction – it makes the ceiling higher, but it also makes the floor invisible. (Shakespeare got nothin’ on me)</p>
+<p>The real tragedy? Once you see it, you start writing that way too.
+You start thinking, &quot;Well, maybe I should make this generic in case someone wants to use quaternions instead of matrices...&quot; and suddenly, congratulations – you're building for someone who doesn't exist.</p>
+<h2>Rust, the Language</h2>
+<p>Rust is a great language. I’ll be the first to say that. It’s not perfect – no language is except <a href="https://github.com/todaymare/margarine">margarine</a> – but it’s the tool I reach for first.</p>
+<p>That said, the Rust ecosystem feels like it's divided into two sides. (Ironic, isn’t it?)</p>
+<p>On one side, you’ve got artists. The folks who treat Rust like an art form – every crate is a masterpiece of generics, lifetimes, and zero-cost abstractions. They push the language to its limits, and honestly? It’s incredible to watch.</p>
+<p>On the other side are the people trying to ship things, the ones who’d use Zig if it weren’t allergic to syntactic sugar. They don’t care about elegance or clever abstractions – they just want their code to compile before they age into retirement.</p>
+<p>That phrasing sounds harsh, but the thing is: neither side is wrong.</p>
+<p>Let's get one thing straight: over-engineering in Rust is incredibly fun. The language hands you these shiny tools and it's hard not to play with them. It's like LEGO for programmers.</p>
+<p>And hey, when you can push the boundaries of abstractions and keep things fast? It feels like you've cracked the code to the universe.</p>
+<p>But here's the problem: Most people just want to see what the code does, not spelunk through an art installation of traits.</p>
+<p>The core problem is that Rust being Rust turns code you can’t understand into the default.
+The community shows up to tell you that if you don’t over-complicate it, you’re writing unidiomatic Rust.</p>
+<p>If &quot;Go to Definition&quot; can’t take me to your implementation and I have to dig through your GitHub repo just to see how Matrix4::mul works – can I really say I know the code I’m using?</p>
+<p>For many people, maybe that’s fine. But every dependency you bring in is still your responsibility. Obviously I don’t understand every library I use – that’d be absurd – but I’d like to live in a world where I can understand the code I bring in.</p>
+<p>And just to be clear: abstraction isn’t the enemy. It’s what lets you write 3D engines or HTTP servers without caring about hardware or the TCP stack.
+The problem is when we build for someday instead of today.</p>
+<p>I’m not saying stop writing clever code – just make sure it earns its keep. When you feel that &quot;maybe I should make this generic&quot; impulse, ask: Who benefits from this, today?
+If the answer is &quot;future me,&quot; maybe wait until future you actually shows up.</p>
+<p>Here’s my rule of thumb: <strong>keep &quot;Go to Definition&quot; useful.</strong></p>
+<h1>The Conclusion</h1>
+<p>I've been on both sides of the extreme. Heck, my first time trying to learn OpenGL I tried to write a compile-time zero-cost abstraction for it while I was learning it. Later, I just went with raw OpenGL in a dozen different projects.
+So, yeah, I've lived both sides of the story.</p>
+<p>From that experience, I've learned one thing: things are almost always easier when there are fewer moving parts. Simpler code doesn't mean worse code – it just means you can still understand it six months later.</p>
+<p>So maybe try the other side of the spectrum if you haven't. Or don't.</p>
+<p>Anyway, this post will probably age terribly. Someone will send it to me in two years while I’m working on my eighth trait-based ECS library written entirely in macros.</p>
+<p>But for now, I just wanted to encourage maybe one person to try to write code that's just code... not abstracted, not filled with traits or generics... just code.</p>
+<p>Maybe one day the novelty will wear off, and Rust will chill out.</p>
+<p>Until then, I'll be over here using <code>glam</code>.</p>
+<p>If you enjoyed this post, considering tipping me on- well, I haven't set up my ko-fi yet, but I'd love it if you could whisper 'nice post' at your screen for now.</p>
+        </article>
+    </main>
+
+    <nav class="post-nav">
+        <a class="home" href="../../">Home</a>
+    </nav>
+    </div>
+    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+</body>
+</html>
