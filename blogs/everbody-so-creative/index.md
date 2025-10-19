@@ -18,12 +18,10 @@ Take `nalgebra`. Fantastic crate – powerful, flexible, and deeply overqualifie
 
 It’s not that I hate nalgebra – it’s brilliant. I just hate that this kind of maximalism has become the default.  
 
-You don’t just learn the crate – you convert to its religion.  
-
 Want to do something slightly off-script?  
 That’ll be three trait bounds, one custom derive, and a spiritual journey through `src/internal/utils/mod.rs`
 
-You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, a shed is fine.
+You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, all you need is a shed.
 
 Take `glam`, for example, which doesn’t try to solve philosophy – it just does math. You don’t need a PhD in generics to understand what `Vec3::normalize()` does, and that’s exactly the point.  
 
@@ -75,7 +73,6 @@ So, yeah, I've lived both sides of the story.
 From that experience, I've learned one thing: things are almost always easier when there are fewer moving parts. Simpler code doesn't mean worse code – it just means you can still understand it six months later.
 
 So maybe try the other side of the spectrum if you haven't. Or don't.  
-
 
 Anyway, this post will probably age terribly. Someone will send it to me in two years while I’m working on my eighth trait-based ECS library written entirely in macros.
 
