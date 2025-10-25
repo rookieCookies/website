@@ -43,9 +43,10 @@ fn main() {
 
     let mut blogs_section = String::new();
     let mut rss = rss_gen::RssData::new(Some(RssVersion::RSS2_0))
-        .title("Todaymare's Blog")
+        .title("daymare.net")
         .link("https://daymare.net/")
-        .description("Explore my personal projects, technical blogs, and creative coding experiments at daymare.net.");
+        .description("Explore my personal projects, technical blogs, and creative coding experiments at daymare.net.")
+        .language("en-us");
 
 
     for blog in blogs.iter().rev() {
@@ -133,14 +134,15 @@ fn main() {
             .link(format!("https://daymare.net/{}", ident))
             .description(description)
             .guid(format!("https://daymare.net/{}", ident))
-            .pub_date(rfc_date);
+            .pub_date(rfc_date)
+            .enclosure(format!("https://daymare.net/{}/thumbnail.png", ident));
 
         rss.add_item(item);
     }
 
     let output = index_template.replace("<!-- expand-blogs -->", &blogs_section);
     std::fs::write("index.html", output).unwrap();
-    std::fs::write("rss.xml", generate_rss(&rss).unwrap()).unwrap();
+    std::fs::write("feed", generate_rss(&rss).unwrap()).unwrap();
 
 }
 
