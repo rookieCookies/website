@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>daymare.net</title><id>https://daymare.net/</id><updated>2025-10-25T17:14:31.677141+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><link href="https://daymare.net/" rel="self"/><entry><title>Everybody&apos;s so Creative!</title><id>https://daymare.net/blogs/everbody-so-creative</id><updated>2025-10-19T08:39:24.740553972+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><category term="Blog"/><link href="https://daymare.net/blogs/everbody-so-creative" rel="alternate"/><published>2025-10-19T08:39:24.740553972+00:00</published><summary>&lt;p&gt;After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.&lt;/p&gt;</summary><content type="html">&lt;p&gt;After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.&lt;/p&gt;
+&lt;p&gt;Hi, it’s me again. Back at it with another rant thinly disguised as a &amp;quot;think piece.&amp;quot;&lt;/p&gt;
+&lt;h2&gt;The Question Nobody Wants to Answer&lt;/h2&gt;
+&lt;p&gt;Have you ever wanted to build something simple in Rust?
+Maybe you reach for &lt;code&gt;bevy&lt;/code&gt;, or &lt;code&gt;wgpu&lt;/code&gt;, or some other library that promises everything you didn&apos;t ask for.&lt;/p&gt;
+&lt;p&gt;And then you hit that moment – you&apos;re debugging, you hit &amp;quot;Go to Definition&amp;quot;, and suddenly you&apos;re free falling through ten layers of traits, macros, and generics just to figure out how a buffer updates.&lt;/p&gt;
+&lt;p&gt;If that sounds familiar, congratulations: you&apos;ve met Rust&apos;s favourite pastime – abstraction as performance art.&lt;/p&gt;
+&lt;h2&gt;Why Are We Like This?&lt;/h2&gt;
+&lt;p&gt;I get it – abstractions are cool. They’re supposed to hide complexity so we can focus on cooler stuff. And Rust loves that idea. Traits, generics, lifetimes – layer upon layer of &amp;quot;don’t worry about it honey.&amp;quot;&lt;/p&gt;
+&lt;p&gt;Take &lt;code&gt;nalgebra&lt;/code&gt;. Fantastic crate – powerful, flexible, and deeply overqualified for 90% of use cases.&lt;/p&gt;
+&lt;p&gt;It’s not that I hate nalgebra – it’s brilliant. I just hate that this kind of maximalism has become the default.&lt;/p&gt;
+&lt;p&gt;Want to do something slightly off-script?&lt;br /&gt;
+That’ll be three trait bounds, one custom derive, and a spiritual journey through &lt;code&gt;src/internal/utils/mod.rs&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;You might say these libraries are built this way because we don’t know what the user might want – and fair enough, that’s been the curse of library design since the dawn of libraries. But not every problem needs a skyscraper of abstractions; most of the time, all you need is a shed.&lt;/p&gt;
+&lt;p&gt;Take &lt;code&gt;glam&lt;/code&gt;, for example, which doesn’t try to solve philosophy – it just does math. You don’t need a PhD in generics to understand what &lt;code&gt;Vec3::normalize()&lt;/code&gt; does, and that’s exactly the point.&lt;/p&gt;
+&lt;p&gt;But the thing is – &lt;code&gt;nalgebra&lt;/code&gt; isn&apos;t an isolated example. It’s cultural.&lt;/p&gt;
+&lt;p&gt;And that’s the real cost of abstraction – it makes the ceiling higher, but it also makes the floor invisible. (Shakespeare got nothin’ on me)&lt;/p&gt;
+&lt;p&gt;The real tragedy? Once you see it, you start writing that way too.
+You start thinking, &amp;quot;Well, maybe I should make this generic in case someone wants to use quaternions instead of matrices...&amp;quot; and suddenly, congratulations – you&apos;re building for someone who doesn&apos;t exist.&lt;/p&gt;
+&lt;h2&gt;Rust, the Language&lt;/h2&gt;
+&lt;p&gt;Rust is a great language. I’ll be the first to say that. It’s not perfect – no language is except &lt;a href=&quot;https://github.com/todaymare/margarine&quot;&gt;margarine&lt;/a&gt; – but it’s the tool I reach for first.&lt;/p&gt;
+&lt;p&gt;That said, the Rust ecosystem feels like it&apos;s divided into two sides. (Ironic, isn’t it?)&lt;/p&gt;
+&lt;p&gt;On one side, you’ve got artists. The folks who treat Rust like an art form – every crate is a masterpiece of generics, lifetimes, and zero-cost abstractions. They push the language to its limits, and honestly? It’s incredible to watch.&lt;/p&gt;
+&lt;p&gt;On the other side are the people trying to ship things, the ones who’d use Zig if it weren’t allergic to syntactic sugar. They don’t care about elegance or clever abstractions – they just want their code to compile before they age into retirement.&lt;/p&gt;
+&lt;p&gt;That phrasing sounds harsh, but the thing is: neither side is wrong.&lt;/p&gt;
+&lt;p&gt;Let&apos;s get one thing straight: over-engineering in Rust is incredibly fun. The language hands you these shiny tools and it&apos;s hard not to play with them. It&apos;s like LEGO for programmers.&lt;/p&gt;
+&lt;p&gt;And hey, when you can push the boundaries of abstractions and keep things fast? It feels like you&apos;ve cracked the code to the universe.&lt;/p&gt;
+&lt;p&gt;But still; most people just want to see what the code does, not spelunk through an art installation of traits.&lt;/p&gt;
+&lt;p&gt;The core problem is that Rust being Rust turns code you can’t understand into the default.
+The community shows up to tell you that if you don’t over-complicate it, you’re writing unidiomatic Rust.&lt;/p&gt;
+&lt;p&gt;If &amp;quot;Go to Definition&amp;quot; can’t take me to your implementation and I have to dig through your GitHub repo just to see how Matrix4::mul works – can I really say I know the code I’m using?&lt;/p&gt;
+&lt;p&gt;For many people, maybe that’s fine. But every dependency you bring in is still your responsibility. Obviously I don’t understand every library I use – that’d be absurd – but I’d like to live in a world where I can understand the code I bring in.&lt;/p&gt;
+&lt;p&gt;And just to be clear: abstraction isn’t the enemy. It’s what lets you write 3D engines or HTTP servers without caring about hardware or the TCP stack.
+The problem is when we build for someday instead of today.&lt;/p&gt;
+&lt;p&gt;I’m not saying stop writing clever code – just make sure it earns its keep. When you feel that &amp;quot;maybe I should make this generic&amp;quot; impulse, ask: Who benefits from this, today?
+If the answer is &amp;quot;future me,&amp;quot; maybe wait until future you actually shows up.&lt;/p&gt;
+&lt;p&gt;Here’s my rule of thumb: &lt;strong&gt;keep &amp;quot;Go to Definition&amp;quot; useful.&lt;/strong&gt;&lt;/p&gt;
+&lt;h1&gt;The Conclusion&lt;/h1&gt;
+&lt;p&gt;I&apos;ve been on both sides of the extreme. Heck, my first time trying to learn OpenGL I tried to write a compile-time zero-cost abstraction for it while I was learning it. Later, I just went with raw OpenGL in a dozen different projects.
+So, yeah, I&apos;ve lived both sides of the story.&lt;/p&gt;
+&lt;p&gt;From that experience, I&apos;ve learned one thing: things are almost always easier when there are fewer moving parts. Simpler code doesn&apos;t mean worse code – it just means you can still understand it six months later.&lt;/p&gt;
+&lt;p&gt;So maybe try the other side of the spectrum if you haven&apos;t. Or don&apos;t.&lt;/p&gt;
+&lt;p&gt;Anyway, this post will probably age terribly. Someone will send it to me in two years while I’m working on my eighth trait-based ECS library written entirely in macros.&lt;/p&gt;
+&lt;p&gt;But for now, I just wanted to encourage maybe one person to try to write code that&apos;s just code... not abstracted, not filled with traits or generics... just code.&lt;/p&gt;
+&lt;p&gt;Maybe one day the novelty will wear off, and Rust will chill out.&lt;/p&gt;
+&lt;p&gt;Until then, I&apos;ll be over here using &lt;code&gt;glam&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you enjoyed this post, considering tipping me on- well, I haven&apos;t set up my ko-fi yet, but I&apos;d love it if you could whisper &apos;nice post&apos; at your screen for now.&lt;/p&gt;
+&lt;p&gt;P.S grammarly forked me over vro 🥀&lt;/p&gt;</content></entry><entry><title>Godot Ruined My Sense of Speed</title><id>https://daymare.net/blogs/godot-ruined-me</id><updated>2025-10-12T21:09:01.870614127+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><category term="Blog"/><link href="https://daymare.net/blogs/godot-ruined-me" rel="alternate"/><published>2025-10-12T21:09:01.870614127+00:00</published><summary>&lt;p&gt;Godot didn’t just ruin my game. It ruined how I think about performance and abstraction. What started as a simple voxel prototype spiraled into an existential crisis&lt;/p&gt;</summary><content type="html">&lt;p&gt;Godot didn’t just ruin my game. It ruined how I think about performance and abstraction. What started as a simple voxel prototype spiraled into an existential crisis&lt;/p&gt;
+&lt;p&gt;It was a sunny day (probably), a few months back. I was in a hotel room on my laptop – the one I definitely bought for studying – playing Factorio, like any good student does.
+And then I had a brilliant idea.
+An automation game.
+Factorio, but bigger! And better!&lt;/p&gt;
+&lt;p&gt;Did it matter that I had no experience making games?
+Don&apos;t be ridiculous, of course not!&lt;/p&gt;
+&lt;p&gt;The plan: mix Factorio’s automation, Terraria’s boss fights, and a Minecraft-esque voxel world.
+So I said, considering I have no graphics development experience I should start simple – and make a voxel engine&lt;/p&gt;
+&lt;h2&gt;The Prototype&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;All good games need a prototype&lt;br /&gt;
+- Sun Tzu&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Naturally, the next step was to pick an engine.&lt;br /&gt;
+I wanted something fast, simple, cross-platform – and preferably not Unity, because, well, Unity.&lt;/p&gt;
+&lt;p&gt;Godot seemed perfect. Lightweight, open source, recently got a shiny new 3D renderer (and also because UE hates MacOS)&lt;/p&gt;
+&lt;p&gt;Of course, I knew GDScript wasn&apos;t going to survive a voxel world. So I wrote the simulation in Rust and used Godot purely for visuals.&lt;br /&gt;
+Simple plan, what could possibly go wrong?&lt;/p&gt;
+&lt;p&gt;So I started.&lt;br /&gt;
+Made a Rust extension. Drew a quad. Then a cube. Then a whole chunk.&lt;br /&gt;
+Suddenly I had mining. Machines. Inserters. Belts. Quarries. Crafting.&lt;/p&gt;
+&lt;p&gt;I was unstoppable running purely on caffeine and motivation.&lt;br /&gt;
+It might sound like I&apos;m glossing over the implementation, but the entire prototype took literally two days.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;assets/prototype.png&quot; alt=&quot;An image of the prototype&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;I had so many conversations about how the quarry should work with my friends. It was an interesting design problem: finding upgrades for quarries that weren&apos;t just &amp;quot;the same thing, but faster&amp;quot;, especially since the quarries were meant to dig into the world and destroy it.&lt;/p&gt;
+&lt;p&gt;That also turned quarries into a single-pipe problem — where common resources clog the system and starve rarer ones. Totally irrelevant for this prototype though, since items were just physics bodies moving on top of belts.&lt;/p&gt;
+&lt;p&gt;Anyways, I was ready. I had spent roughly 32 hours over 2 days working on the first prototype of my life. I went outside to grab some food, came back, and even arranged a play-test for the next day.&lt;/p&gt;
+&lt;p&gt;Everything was perfect.&lt;br /&gt;
+The engine worked. The game ran smoothly – until it didn&apos;t.&lt;/p&gt;
+&lt;h3&gt;Things go VERY WRONG&lt;/h3&gt;
+&lt;p&gt;Look, I&apos;m lucky enough to have a great computer. During my testing I couldn&apos;t even get the game to go below 144FPS.&lt;br /&gt;
+But see, I never tried throwing more quarries at it because I assumed any slow-down would come from the naturally expensive thing – the rigidbodies that I used for items.&lt;/p&gt;
+&lt;p&gt;In order for this to make sense I need to show you how procedurally generating a chunk goes in Godot.&lt;/p&gt;
+&lt;p&gt;A chunk is just a mesh made of triangles made of vertices.
+In the simplest voxel engines, you’d generate a quad for every block face — slow, but simple.
+For the prototype, I added a very naive culling algorithm so it wouldn’t generate hidden faces.&lt;/p&gt;
+&lt;p&gt;So far so good. This entire algorithm was implemented in Rust (&lt;em&gt;blazing fast!&lt;/em&gt;).&lt;/p&gt;
+&lt;p&gt;Godot exposes a type called &lt;a href=&quot;https://docs.godotengine.org/en/stable/classes/class_surfacetool.html&quot;&gt;SurfaceTool&lt;/a&gt;, which isn&apos;t technically the lowest-level API they provide but it is pretty much a drop-in replacement for pushing individual vertices into a list.&lt;/p&gt;
+&lt;p&gt;Anyway, here’s how that looked in code – calling into Godot from Rust, in order to draw a quad:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;fn draw_quad(st: &amp;amp;mut SurfaceTool, k: &amp;amp;mut i32, quad: Quad) {
+    let normal = match quad.direction {
+        ...
+    };
+
+    st.set_color(quad.color);
+    st.set_normal(normal);
+    for corner in quad.corners {
+        st.add_vertex(corner);
+    }
+
+
+    st.add_index(*k);
+    st.add_index(*k + 1);
+    st.add_index(*k + 2);
+    st.add_index(*k + 2);
+    st.add_index(*k + 3);
+    st.add_index(*k);
+
+    *k += 4;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And here’s what “just pushing to a list” looks like in comparison:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;fn draw_quad(vertices: &amp;amp;mut Vec&amp;lt;Vector3&amp;gt;, indices: &amp;amp;mut Vec&amp;lt;i32&amp;gt;, k: &amp;amp;mut i32, quad: Quad) {
+    let normal = match quad.direction {
+        ...
+    };
+
+    for corner in quad.corners {
+        vertices.push(corner);
+    }
+
+
+    indices.push(*k);
+    indices.push(*k + 1);
+    indices.push(*k + 2);
+    indices.push(*k + 2);
+    indices.push(*k + 3);
+    indices.push(*k);
+
+    *k += 4;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You might notice there’s not much difference, so really, how bad could &lt;a href=&quot;https://docs.godotengine.org/en/stable/classes/class_surfacetool.html&quot;&gt;SurfaceTool&lt;/a&gt; be?&lt;/p&gt;
+&lt;p&gt;8 milliseconds per chunk! Not terrible – until you realize doing it manually takes 300 microseconds. Twenty-seven times faster.&lt;/p&gt;
+&lt;p&gt;And that’s not even counting Godot’s mesh conversion time, which I’m pretty sure happens way later.&lt;/p&gt;
+&lt;p&gt;At this point you can probably guess what went wrong.
+When my friend play-tested the game, the framerate dropped to a cinematic 10 FPS within an hour.&lt;/p&gt;
+&lt;p&gt;Why didn&apos;t I notice it during my own testing?
+Simple, I was doing things efficiently. I already knew what to build, nothing went to waste.&lt;br /&gt;
+He, on the other hand, decided to cover the planet in quarries (like, five quarries).&lt;/p&gt;
+&lt;p&gt;After it dropped to 10 FPS, he stopped playing. Which, fair.&lt;br /&gt;
+I still count an hour-long playtest as a win – but the reason he stopped playing was... traumatizing.&lt;/p&gt;
+&lt;h1&gt;The Rebound&lt;/h1&gt;
+&lt;p&gt;The prototype was a success, somewhat.&lt;br /&gt;
+So now it was time to make the actual game, properly this time.&lt;/p&gt;
+&lt;p&gt;After that Godot fiasco I decided I&apos;d just go pure Rust.&lt;/p&gt;
+&lt;p&gt;But you can&apos;t just start a project, you need an engine!
+And it needs to be super performant because I never want to see someone stop playing because of performance again.&lt;/p&gt;
+&lt;p&gt;Okay, calm down champ.&lt;/p&gt;
+&lt;p&gt;After the Godot incident (yes, I&apos;m going to call it that, fight me) I over-corrected hard in the other direction to the point where I was seriously considering making a full-blown game engine.&lt;br /&gt;
+Which, granted, isn&apos;t entirely out of the question for me... but still, absurdly unnecessary.&lt;/p&gt;
+&lt;p&gt;Eventually, a brick hit my head and I realized I could just... make a game.
+No engine. No framework. Just raw OpenGL and a giant while loop.&lt;/p&gt;
+&lt;p&gt;Of course you don&apos;t need fancy frameworks or giant game engines... You can just make a game.&lt;/p&gt;
+&lt;p&gt;At the time, however, this was a big revelation for me.&lt;/p&gt;
+&lt;p&gt;So I opened up LearnOpenGL and started replicating my Godot voxel engine one-to-one. Which was quite easy, considering I had to do everything manually anyway.&lt;br /&gt;
+I had a pretty good voxel engine by this point, it was so much faster than Godot could&apos;ve ever been, but now I had to actually implement game features.&lt;/p&gt;
+&lt;p&gt;The first of many being machines.&lt;/p&gt;
+&lt;p&gt;You see in games like Factorio many machines don&apos;t need to always run. In fact, they don&apos;t! Most machines take in some sort of input, process it for N frames, and then do something as a result of it.&lt;br /&gt;
+This sort of system lands itself very well to a WorkQueue.&lt;/p&gt;
+&lt;p&gt;Basically, whenever a machine needed to do something again in 20 ticks it would tell the WorkQueue &amp;quot;hmu in 20 ticks&amp;quot; and then the WorkQueue would handle that accordingly.&lt;br /&gt;
+This system made sure that even if you had millions of machines only the ones that needed to be updated this tick would be accessed.&lt;/p&gt;
+&lt;p&gt;Then, came the belts. In Godot I used physics bodies for items on belts because that was the easiest way to do so but it came with a lot of cons the biggest of which being the fact that belts had no throughput limit. Which cuts out basically 80% of the puzzle in automation games.&lt;/p&gt;
+&lt;p&gt;The tricky part about Factorio-style belts is that they need to be updated back to front, so I had to figure out which belts depend on which other belts – a mini dependency graph!&lt;br /&gt;
+Now, after coming from Godot my perception of performance was so ruined that I was incredibly worried that this was going to be a major performance bottleneck if I didn&apos;t aggressively cache it.&lt;/p&gt;
+&lt;p&gt;Luckily for me, I am not skilled enough to be able to write an algorithm that&apos;s able to heavily cache it so I decided to settle for just reconstructing the entire graph every frame. And guess what? It never became a performance problem.&lt;/p&gt;
+&lt;p&gt;Well that was simple enough, I&apos;ll also mention the things that happened after all of that.&lt;br /&gt;
+I went on a 3 week journey to optimize the heck out of the voxel engine, during which I switched from OpenGL to WGPU because OpenGL on MacOS does not support Shader Storage Buffer Objects (SSBOs)&lt;/p&gt;
+&lt;p&gt;I might make a post on how I optimized the voxel engine (&lt;a href=&quot;https://www.youtube.com/watch?v=40JzyaOYJeY&quot;&gt;check out this video by Vercidium&lt;/a&gt;) but by the end of it I had a voxel engine with async chunk &amp;amp; mesh generation, running at 144FPS+ on an M2 MacBook using 3 GB of ram with a render distance of 3072 blocks in every direction.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;assets/voxel-engine.png&quot; alt=&quot;Voxel Engine Picture&quot; /&gt;&lt;/p&gt;
+&lt;h1&gt;The conclusion?&lt;/h1&gt;
+&lt;p&gt;I can&apos;t say this story has a very good conclusion because the game never ended up getting finished. Mostly because I couldn&apos;t figure out a way to make a factory game feel nice to play in a 3D voxel sandbox.&lt;/p&gt;
+&lt;p&gt;What I learned from all this wasn’t really about Godot or performance – it was about trust. Or the lack of it.&lt;/p&gt;
+&lt;p&gt;I thought I was writing about slow code, but looking back, I was really writing about black boxes I couldn’t see inside.&lt;/p&gt;
+&lt;p&gt;After going cold-turkey on abstractions, I realized something worse than inefficiency: bloat. It turns out working in a simple, honest codebase – one where you see everything – is just more fun.&lt;/p&gt;
+&lt;p&gt;For those who may want to check out the source code for the final version of the game &lt;a href=&quot;https://github.com/todaymare/factory-game&quot;&gt;here you go&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Maybe there&apos;s a conclusion to draw from this story, in any case I hope you enjoyed it.&lt;/p&gt;</content></entry><entry><title>Four years, Five failures, One compiler</title><id>https://daymare.net/blogs/four-years-five-failures-one-compiler</id><updated>2025-10-05T14:36:34.509273115+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><category term="Blog"/><link href="https://daymare.net/blogs/four-years-five-failures-one-compiler" rel="alternate"/><published>2025-10-05T14:36:34.509273115+00:00</published><summary>&lt;p&gt;At 14, I thought writing a compiler would be a quick side quest in building a game engine. Four years later, I finally built one that works. And it was one hell of a journey.&lt;/p&gt;</summary><content type="html">&lt;p&gt;At 14, I thought writing a compiler would be a quick side quest in building a game engine. Four years later, I finally built one that works. And it was one hell of a journey.&lt;/p&gt;
+&lt;p&gt;Before I dive into the compilers themselves, I should explain why I even started making them in the first place. Initially, writing a programming language wasn&apos;t the goal; it was just supposed to be a small part of a bigger piece: building my own game engine. I didn&apos;t expect that &amp;quot;small part&amp;quot; to turn into a four-year rabbit hole, but now that you know why it all started, let&apos;s look at a few of the failed projects, shall we?&lt;/p&gt;
+&lt;h2&gt;CryScript&lt;/h2&gt;
+&lt;p&gt;Super edgy name, I know. To be fair, the game engine this was meant for was called &lt;em&gt;Crytex&lt;/em&gt;, so that doesn&apos;t make it any better. It was back in early 2022, so technically, the title of this post is clickbait. Oh well.&lt;/p&gt;
+&lt;p&gt;While writing this, I dug through &lt;a href=&quot;https://github.com/todaymare/CryScript/&quot;&gt;the old GitHub repo&lt;/a&gt;, which had a very odd structure. Something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;crates/
+ cry_script/
+ src/
+        ..
+    Cargo.toml
+src/
+ main.rs
+Cargo.toml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I have no idea what I was on when I set it up like that, but for a moment, it actually scared me. I thought I&apos;d lost the source. Luckily, the code&apos;s all still there, so let&apos;s take a look and have some fun.&lt;/p&gt;
+&lt;p&gt;I&apos;m pretty sure I started off by following a &lt;a href=&quot;https://www.youtube.com/watch?v=Eythq9848Fg&amp;amp;list=PLZQftyCk7_SdoVexSmwy_tBgs7P0b97yD&quot;&gt;Python compiler tutorial&lt;/a&gt;... in Rust.&lt;/p&gt;
+&lt;p&gt;And surprisingly, that worked well for the first half. I got the lexer and parser running (basically the parts that read the code), and they still hold up well even now.&lt;/p&gt;
+&lt;p&gt;However, things started falling apart once I reached the interpreter, the bit that&apos;s supposed to run the code.&lt;/p&gt;
+&lt;p&gt;But up until that point? Honestly, not bad. Even skimming through it today, I can see the same patterns I still use in my work.&lt;/p&gt;
+&lt;p&gt;..Oh my god, I take all of that back.&lt;br /&gt;
+The interpreter is an abomination of Rust code, and it&apos;s also where you can clearly see the effects of Python. It&apos;s a tree-walk interpreter, which basically means the Rust compiler absolutely hates it.&lt;/p&gt;
+&lt;p&gt;I vividly remember fighting the borrow checker &amp;amp; sprinkling in `Rc&amp;lt;RefCell&amp;lt;_&amp;gt;&amp;gt;&apos;s everywhere whilst writing this, and it seems like eventually, I just gave up and resorted to doing:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;struct VariableReference {
+ reference: *mut Variable,
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Which is, apparently, a non-clone, manual version of a reference-counted value?&lt;br /&gt;
+Not a clue who wrote that code; definitely wasn&apos;t me!&lt;br /&gt;
+For non-Rust users: this is me fighting the language&apos;s safety system and losing badly.&lt;/p&gt;
+&lt;p&gt;I have no idea where this was needed, but it might be one of the worst pieces of Rust code I&apos;ve ever written, second only to the &lt;em&gt;Crytex&lt;/em&gt; engine.&lt;/p&gt;
+&lt;p&gt;That one doesn&apos;t even compile anymore, by the way, because newer Rust versions prevent casting an immutable reference to a mutable one. (Which, fun fact, is undefined behaviour)&lt;/p&gt;
+&lt;p&gt;Oh, and apparently, I was passing around the main context of the interpreter as a mutable pointer. Those of you who use languages like C or C++ might think &amp;quot;so what? that&apos;s normal&amp;quot;, but in Rust, using pointers mixed with references comes with quite a bit more headache.&lt;/p&gt;
+&lt;p&gt;In hindsight, &lt;em&gt;CryScript&lt;/em&gt; was less of a compiler and more of a Rust safety demonstration. The fact that it even ran code at all is a miracle. If I pulled this at a Rust conference, I&apos;d probably get banned. But it was a Rust newbie&apos;s first attempt at making a compiler, and it wasn&apos;t a half-bad one.&lt;/p&gt;
+&lt;h2&gt;azurite&lt;/h2&gt;
+&lt;p&gt;Fast forward a year, and I started making &lt;em&gt;azurite&lt;/em&gt; (the &apos;a&apos; is non-capitalised intentionally). This one&apos;s very near and dear to my heart as it&apos;s the project that let me meet some amazing people I still talk to today.&lt;/p&gt;
+&lt;p&gt;Unlike &lt;em&gt;CryScript&lt;/em&gt;, this one came a bit later, when I actually knew how to use GitHub. It has 76 commits, many of which have completely nonsensical names that could probably get me rejected from a few jobs.&lt;/p&gt;
+&lt;p&gt;I should, however, mention that between starting &lt;em&gt;azurite&lt;/em&gt; and finishing &lt;em&gt;CryScript&lt;/em&gt;, I joined the r/ProgrammingLanguage&apos;s Discord server, which led to me reading the book &lt;a href=&quot;https://craftinginterpreters.com/&quot;&gt;Crafting Interpreters&lt;/a&gt;. I think everyone interested in compilers or interpreters should go through it at least once.&lt;/p&gt;
+&lt;p&gt;Unfortunately, I don&apos;t actually know when &lt;em&gt;azurite&lt;/em&gt; started, since the GitHub repo seems to have been created after the language was already up and running. There are a bunch of example programs and documentation in there, so it must&apos;ve been pretty far along.&lt;/p&gt;
+&lt;p&gt;There are binaries uploaded from the early days, but since I apparently thought my code was too special to share, I didn&apos;t upload the source, you know, in case someone stole my brainchild. After a while, though, I came to my senses, uploaded the code, and blessed the world with my amazing engineering.&lt;/p&gt;
+&lt;p&gt;A significant difference between &lt;em&gt;azurite&lt;/em&gt; and &lt;em&gt;CryScript&lt;/em&gt; is that &lt;em&gt;azurite&lt;/em&gt; actually had static analysis, whereas &lt;em&gt;CryScript&lt;/em&gt; was dynamically-typed. That said, the lexer and the parser are almost identical.&lt;/p&gt;
+&lt;p&gt;I&apos;d love to make fun of the static analysis, but honestly, many of the core ideas I used back then are still part of how I think about language design today. It&apos;s surprising to see that, at least on a high level, I already had a so-so grasp of the basics.&lt;/p&gt;
+&lt;p&gt;But I did find this comment, which I think perfectly captures my ambition at the time.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// TODO: Maybe make the multi-file-loading multi-threaded
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The bytecode interpreter for &lt;em&gt;azurite&lt;/em&gt; had a major performance flaw that someone else figured out. If I remember correctly, it was something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;let mut callstack = ..
+let mut code = &amp;amp;mut callstack[0];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;vs&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;let mut code = callstack[0].clone();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That one change made the interpreter run &lt;strong&gt;10x faster&lt;/strong&gt;. Wild. But more importantly, that flaw introduced me to &lt;a href=&quot;https://www.youtube.com/@leddoo&quot;&gt;leddoo&lt;/a&gt;, who&apos;s now a close friend. So I guess being bad at programming has its perks.&lt;/p&gt;
+&lt;p&gt;I also noticed other people starring and contributing to this project, which might make you wonder why I stopped working on it. The reason is quite simple really, the codebase collapsed under its own weight.&lt;/p&gt;
+&lt;p&gt;See, that&apos;s the problem with making a long-term project in a field you barely understand. Every time you add something that wasn&apos;t initially expected, in my case that was generics, the codebase just gets worse and worse and eventually it got too much to handle.&lt;/p&gt;
+&lt;p&gt;It&apos;s bittersweet reading the old commit log. People added features like a REPL — that one was my now-friend &lt;a href=&quot;https://github.com/pyrotek45/&quot;&gt;Pyrotek45&lt;/a&gt; — and then months later, I removed it. To anyone who ever contributed to &lt;em&gt;azurite&lt;/em&gt; and happens to read this: thank you. I really mean it.&lt;/p&gt;
+&lt;h2&gt;margarine&lt;/h2&gt;
+&lt;p&gt;And now the final gauntlet. &lt;em&gt;margarine&lt;/em&gt;.&lt;br /&gt;
+I started near the end of 2023. At first, it was supposed to be for another game engine, this one called &lt;em&gt;butter&lt;/em&gt;. The plan was to make a language centred around ECS architecture and value types. I even wrote a lexer, parser, semantic analysis, and an LLVM-based codegen.&lt;/p&gt;
+&lt;p&gt;But when it came to integrating it, I caved and just used Lua. Yeah. Because here&apos;s the truth: I&apos;d spent four years learning how to make a compiler... but not how to make a game engine.&lt;/p&gt;
+&lt;p&gt;That actually felt horrible. After all that work, I shelved margarine. I moved on to voxel engines, games, raytracers, fluid simulations and much more..&lt;/p&gt;
+&lt;p&gt;You read the title, though, you know the story didn&apos;t end there.&lt;/p&gt;
+&lt;p&gt;A couple of weeks ago, I came back to &lt;em&gt;margarine&lt;/em&gt;, for what reason I don&apos;t know. This time, I stripped away the over-engineering (no more ECS gimmick). I ditched LLVM (way too painful) and built a clean bytecode interpreter instead.&lt;/p&gt;
+&lt;p&gt;And now? I finally have what I dreamed of: an embeddable programming language I can use in any project.&lt;/p&gt;
+&lt;p&gt;So here it is, after years of broken interpreters, pointer hacks, and abandoned repos, I am delighted to introduce to you, &lt;em&gt;margarine&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;fn main() {
+ var numbers = [1, 2, 3, 4, 5]
+ var multiplier = int::parse(std::read()!)!
+
+ var doubled = numbers.map(|n| n * multiplier)
+    print(doubled)
+    // If input is 2 → [2, 4, 6, 8, 10]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A language that feels like Rust, but without the fights I used to lose with the borrow checker. It&apos;s a statically-typed language that is almost too trivial to embed into any project. The syntax is very akin to Rust with Iterators, Closures, and much more!&lt;/p&gt;
+&lt;p&gt;Was this post just a big ad for &lt;em&gt;margarine&lt;/em&gt;? It certainly wasn&apos;t the intention but after four years it feels good to finally share something that works, and it couldn&apos;t hurt to &lt;a href=&quot;https://github.com/todaymare/margarine&quot;&gt;check it out&lt;/a&gt; can it?&lt;/p&gt;
+&lt;p&gt;PS: I’ve seen a few people mention they’d have liked a more technical deep dive, totally fair. This post was always meant as a story of the journey, not the implementation, but don’t worry: a detailed, technical write-up is already in the works. Thanks to everyone who read and shared feedback, seriously appreciate it.&lt;/p&gt;</content></entry><entry><title>hello world</title><id>https://daymare.net/blogs/first-blog</id><updated>2025-10-02T19:36:48.068611622+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><category term="Blog"/><link href="https://daymare.net/blogs/first-blog" rel="alternate"/><published>2025-10-02T19:36:48.068611622+00:00</published><summary>&lt;p&gt;uh, hi, idk what to say here but helloooo. i made a static site generator for this. it takes the first line of the markdown as the title and the 2nd line as the summary actually i lied you can use multiple lines if you end the line with a \&lt;/p&gt;</summary><content type="html">&lt;p&gt;uh, hi, idk what to say here but helloooo. i made a static site generator for this. &lt;br /&gt;
+it takes the first line of the markdown as the title and the 2nd line as the summary &lt;br /&gt;
+actually i lied you can use multiple lines if you end the line with a \&lt;/p&gt;
+&lt;p&gt;um, i&apos;m gonna ask chatgpt to write something here&lt;br /&gt;
+it generated something super corny as expected. i ain&apos;t putting that in here&lt;/p&gt;
+</content></entry></feed>

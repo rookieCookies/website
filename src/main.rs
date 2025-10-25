@@ -1,5 +1,6 @@
 use std::{fmt::Write, time::SystemTime};
 
+use atom_syndication::Category;
 use chrono::Datelike;
 use rss_gen::{generate_rss, RssVersion};
 
@@ -48,6 +49,7 @@ fn main() {
         .description("Explore my personal projects, technical blogs, and creative coding experiments at daymare.net.")
         .language("en-us");
 
+    let mut atom_entries = vec![];
 
     for blog in blogs.iter().rev() {
         let ident = &blog.ident;
@@ -138,11 +140,68 @@ fn main() {
             .enclosure(format!("https://daymare.net/{}/thumbnail.png", ident));
 
         rss.add_item(item);
+
+
+        atom_entries.push(atom_syndication::Entry {
+            title: title.into(),
+            id: format!("https://daymare.net/{}", ident),
+            updated: date.into(),
+            authors: vec![atom_syndication::Person {
+                name: "daymare".into(),
+                email: None,
+                uri: Some("https://daymare.net/".into()),
+            }],
+            links: vec![atom_syndication::Link {
+                href: format!("https://daymare.net/{}", ident),
+                rel: "alternate".into(),
+                mime_type: None,
+                hreflang: None,
+                title: None,
+                length: None,
+            }],
+            content: Some(atom_syndication::Content {
+                value: Some(html),
+                src: None,
+                content_type: Some("html".into()),
+                ..Default::default()
+            }),
+            categories: vec![Category {
+                term: "Blog".into(),
+                scheme: None,
+                label: None,
+            }],
+            published: Some(date.into()),
+            summary: Some(description_html.into()),
+            ..Default::default()
+        });
     }
+
+    let atom = atom_syndication::Feed {
+        title: "daymare.net".into(),
+        id: "https://daymare.net/".into(),
+        updated: chrono::Utc::now().into(),
+        authors: vec![atom_syndication::Person {
+            name: "daymare".into(),
+            email: None,
+            uri: Some("https://daymare.net/".into()),
+        }],
+        links: vec![atom_syndication::Link {
+            href: "https://daymare.net/".into(),
+            rel: "self".into(),
+            mime_type: None,
+            hreflang: None,
+            title: None,
+            length: None,
+        }],
+        entries: atom_entries,
+        ..Default::default()
+    };
+
 
     let output = index_template.replace("<!-- expand-blogs -->", &blogs_section);
     std::fs::write("index.html", output).unwrap();
-    std::fs::write("feed", generate_rss(&rss).unwrap()).unwrap();
+    std::fs::write("rss.xml", generate_rss(&rss).unwrap()).unwrap();
+    std::fs::write("atom.xml", atom_syndication::Feed::to_string(&atom)).unwrap();
 
 }
 
