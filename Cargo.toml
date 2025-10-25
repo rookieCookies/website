@@ -10,3 +10,9 @@ rss-gen = "*"
 atom_syndication = "*"
 image = "*"
 rayon = "*"
+
+[profile.dev.package.image]
+opt-level = 3
+
+[profile.dev.package.rayon]
+opt-level = 3

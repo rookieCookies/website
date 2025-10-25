@@ -57,7 +57,16 @@
     </div>
     
 
-    <img loading="eager" class="thumbnail" src="./thumbnail.png" alt="Thumbnail for <!-- expand-title --> blog post" />
+    <img loading="eager" class="thumbnail" alt="Thumbnail for <!-- expand-title --> blog post"
+        srcset="
+            ./assets/thumbnail_400x336.webp 400w,
+            ./assets/thumbnail_800x673.webp 800w,
+            ./assets/thumbnail_1200x1010.webp 1200w,
+            ./assets/thumbnail_1600x1347.webp 1600w,
+            ./assets/thumbnail_1900x1600.webp 1900w
+        "
+        sizes="(max-width: 80rem) 90vw, 70rem"
+    />
 
     <header>
         <h1><!-- expand-title --></h1>

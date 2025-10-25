@@ -3,6 +3,7 @@ use std::{fmt::Write, time::SystemTime};
 use atom_syndication::Category;
 use chrono::Datelike;
 use image::codecs::webp::WebPEncoder;
+use rayon::iter::{ParallelBridge, ParallelIterator};
 use rss_gen::{generate_rss, RssVersion};
 
 fn main() {
@@ -52,7 +53,8 @@ fn main() {
 
     let mut atom_entries = vec![];
 
-    for blog in blogs.iter().rev() {
+    let mut entries = blogs.iter().rev().enumerate().par_bridge()
+    .map(|(index, blog)| {
         let ident = &blog.ident;
         let title = blog.markdown.lines().next().unwrap_or("# Untitled");
         let title = title.split_once('#').unwrap().1.trim();
@@ -75,8 +77,8 @@ fn main() {
         }
 
         let description_html = markdown::to_html(&description);
-        let thumbnail = format!("{}/thumbnail.png", ident);
-        let thumbnail = if std::fs::exists(&thumbnail).unwrap() { thumbnail.as_str() }
+        let thumbnail_file = format!("{}/thumbnail.png", ident);
+        let thumbnail = if std::fs::exists(&thumbnail_file).unwrap() { thumbnail_file.as_str() }
                         else { "https://placehold.co/1900x1600" };
 
         if !std::fs::exists(format!("{ident}/assets")).unwrap() {
@@ -84,11 +86,27 @@ fn main() {
         }
 
         // downscale thumbnail & convert to webp
-        {
-            let img = image::open(&thumbnail).unwrap();
+        'b: {
+            // if we already have generated the thumbnail and the file is newer than the source, skip
+            let thumbnail_webp = format!("{}/assets/thumbnail_1900x1600.webp", ident);
+            if std::fs::exists(&thumbnail_webp).unwrap() {
+                let thumb_meta = std::fs::metadata(&thumbnail_webp).unwrap();
+                let source_meta = std::fs::metadata(&thumbnail_file).unwrap();
+                if thumb_meta.modified().unwrap() > source_meta.modified().unwrap() {
+                    println!("skipping thumbnail generation for {ident}, already exists and is up to date");
+                    break 'b;
+                }
+            } else {
+                println!("generating thumbnails for {ident}");
+            }
+
+
+
+
+            let img = image::open(&thumbnail_file).unwrap();
             assert!(img.width() == 1900 && img.height() == 1600, "thumbnail image must be 1900x1600 pixels");
 
-            for size in [400, 800, 1200, 1600] {
+            for size in [400, 800, 1200, 1600, 1900] {
                 let resized = img.resize_exact(size, size * 1600 / 1900, image::imageops::FilterType::Lanczos3);
                 let output_path = format!("{}/assets/thumbnail_{}x{}.webp", ident, size, size * 1600 / 1900);
                 let mut output_file = std::fs::File::create(&output_path).unwrap();
@@ -96,20 +114,6 @@ fn main() {
                 encoder.encode(&resized.to_rgba8(), resized.width(), resized.height(), image::ExtendedColorType::Rgba8).unwrap();
             }
             
-        }
-
-        if !blog.is_hidden {
-            let _ = writeln!(
-                &mut blogs_section,
-                "
-                    <a class=\"blog-card\" href=\"{ident}\">
-                        <img src=\"{thumbnail}\" alt=\"Blog Image\">
-                        <span class=\"titlecard\"><h3>{title}</h3></span>
-                        <h4>{read_time} min. read</h4>
-                        <p>{description_html}</p>
-                    </a>
-                "
-            );
         }
 
 
@@ -148,12 +152,30 @@ fn main() {
 
         // generate rss item
         if blog.is_hidden {
-            continue;
+            return None;
         }
+
+        let blogs_section = format!(
+            "
+                <a class=\"blog-card\" href=\"{ident}\">
+                    <!-- <img src=\"{thumbnail}\" alt=\"Blog Image\"> -->
+                    <img src=\"{ident}/assets/thumbnail_1900x1600.webp\" alt=\"Blog Image\" srcset=\"
+                        {ident}/assets/thumbnail_400x336.webp 400w,
+                        {ident}/assets/thumbnail_800x673.webp 800w,
+                        {ident}/assets/thumbnail_1200x1010.webp 1200w,
+                        {ident}/assets/thumbnail_1600x1347.webp 1600w,
+                        {ident}/assets/thumbnail_1900x1600.webp 1900w
+                    \" sizes=\"19rem\">
+                    <span class=\"titlecard\"><h3>{title}</h3></span>
+                    <h4>{read_time} min. read</h4>
+                    <p>{description_html}</p>
+                </a>
+            "
+        );
 
 
         let rfc_date = date.format("%a, %d %b %Y %H:%M:%S %z").to_string();
-        let item = rss_gen::RssItem::new()
+        let rss_item = rss_gen::RssItem::new()
             .title(title)
             .link(format!("https://daymare.net/{}", ident))
             .description(description)
@@ -161,10 +183,8 @@ fn main() {
             .pub_date(rfc_date)
             .enclosure(format!("https://daymare.net/{}/thumbnail.png", ident));
 
-        rss.add_item(item);
 
-
-        atom_entries.push(atom_syndication::Entry {
+        let atom_item = atom_syndication::Entry {
             title: title.into(),
             id: format!("https://daymare.net/{}", ident),
             updated: date.into(),
@@ -195,7 +215,19 @@ fn main() {
             published: Some(date.into()),
             summary: Some(description_html.into()),
             ..Default::default()
-        });
+        };
+
+        Some((index, blogs_section, rss_item, atom_item))
+    })
+    .filter_map(|value| value)
+    .collect::<Vec<_>>();
+
+    entries.sort_by_key(|entry| entry.0);
+
+    for entry in entries {
+        blogs_section.push_str(&entry.1);
+        rss.add_item(entry.2);
+        atom_entries.push(entry.3);
     }
 
     let atom = atom_syndication::Feed {
