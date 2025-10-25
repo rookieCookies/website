@@ -2,6 +2,7 @@ use std::{fmt::Write, time::SystemTime};
 
 use atom_syndication::Category;
 use chrono::Datelike;
+use image::codecs::webp::WebPEncoder;
 use rss_gen::{generate_rss, RssVersion};
 
 fn main() {
@@ -77,6 +78,25 @@ fn main() {
         let thumbnail = format!("{}/thumbnail.png", ident);
         let thumbnail = if std::fs::exists(&thumbnail).unwrap() { thumbnail.as_str() }
                         else { "https://placehold.co/1900x1600" };
+
+        if !std::fs::exists(format!("{ident}/assets")).unwrap() {
+            std::fs::create_dir(format!("{ident}/assets")).unwrap();
+        }
+
+        // downscale thumbnail & convert to webp
+        {
+            let img = image::open(&thumbnail).unwrap();
+            assert!(img.width() == 1900 && img.height() == 1600, "thumbnail image must be 1900x1600 pixels");
+
+            for size in [400, 800, 1200, 1600] {
+                let resized = img.resize_exact(size, size * 1600 / 1900, image::imageops::FilterType::Lanczos3);
+                let output_path = format!("{}/assets/thumbnail_{}x{}.webp", ident, size, size * 1600 / 1900);
+                let mut output_file = std::fs::File::create(&output_path).unwrap();
+                let encoder = WebPEncoder::new_lossless(&mut output_file);
+                encoder.encode(&resized.to_rgba8(), resized.width(), resized.height(), image::ExtendedColorType::Rgba8).unwrap();
+            }
+            
+        }
 
         if !blog.is_hidden {
             let _ = writeln!(
