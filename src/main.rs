@@ -162,7 +162,7 @@ fn main() {
                 length: None,
             }],
             content: Some(atom_syndication::Content {
-                value: Some(html),
+                value: Some(html.replace("<img src=\"", format!("<img src=\"https://daymare.net/{}/", ident).as_str())),
                 src: None,
                 content_type: Some("html".into()),
                 ..Default::default()
