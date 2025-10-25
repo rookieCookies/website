@@ -78,17 +78,19 @@ fn main() {
         let thumbnail = if std::fs::exists(&thumbnail).unwrap() { thumbnail.as_str() }
                         else { "https://placehold.co/1900x1600" };
 
-        let _ = writeln!(
-            &mut blogs_section,
-            "
-                <a class=\"blog-card\" href=\"{ident}\">
-                    <img src=\"{thumbnail}\" alt=\"Blog Image\">
-                    <span class=\"titlecard\"><h3>{title}</h3></span>
-                    <h4>{read_time} min. read</h4>
-                    <p>{description_html}</p>
-                </a>
-            "
-        );
+        if !blog.is_hidden {
+            let _ = writeln!(
+                &mut blogs_section,
+                "
+                    <a class=\"blog-card\" href=\"{ident}\">
+                        <img src=\"{thumbnail}\" alt=\"Blog Image\">
+                        <span class=\"titlecard\"><h3>{title}</h3></span>
+                        <h4>{read_time} min. read</h4>
+                        <p>{description_html}</p>
+                    </a>
+                "
+            );
+        }
 
 
         // the blog's index.html
