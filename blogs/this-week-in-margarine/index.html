@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This week in margarine – daymare.net</title>
+    <link rel="stylesheet" href="../../blog_styles.css">
+    <link rel="preload" as="image" href="./thumbnail.png">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "This week in margarine",
+            "image": "https://daymare.net/blogs/this-week-in-margarine/thumbnail.png",
+            "author": {
+                "@type": "Person",
+                "name": "Todaymare"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "daymare.net",
+                "logo": {
+                "@type": "ImageObject",
+                "url": "https://daymare.net/logo.png"
+                }
+            },
+            "datePublished": "2025-10-26T06:46:11.276630437Z",
+            "url": "https://daymare.net/blogs/this-week-in-margarine/",
+            "description": "A quick update on the progress of my programming language margarine. It's build system, why it won't have a JIT, and other design decisions."
+        }
+    </script>
+    <script defer data-domain="daymare.net" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+    <div class="text-body">
+
+    <meta name="description" content="A quick update on the progress of my programming language margarine. It's build system, why it won't have a JIT, and other design decisions.">
+    <meta name="author" content="Todaymare">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="This week in margarine">
+    <meta property="og:description" content="A quick update on the progress of my programming language margarine. It's build system, why it won't have a JIT, and other design decisions.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://daymare.net/blogs/this-week-in-margarine/">
+    <meta property="og:image" content="https://daymare.net/blogs/this-week-in-margarine/thumbnail.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="This week in margarine">
+    <meta name="twitter:description" content="A quick update on the progress of my programming language margarine. It's build system, why it won't have a JIT, and other design decisions.">
+    <meta name="twitter:image" content="https://daymare.net/blogs/this-week-in-margarine/thumbnail.png">
+
+    <link rel="canonical" href="https://daymare.net/blogs/this-week-in-margarine/">
+
+
+    <div class="meta" itemscope itemtype="https://schema.org/BlogPosting">
+        <span><time itemprop="datePublished" datetime="2025-10-26T06:46:11.276630437Z">Oct 26</time> | <span itemprop="author">by me</span></span>
+        <span class="read-time">8 min. read</span>
+    </div>
+    
+
+    <img loading="eager" class="thumbnail" alt="Thumbnail for This week in margarine blog post"
+        srcset="
+            ./assets/thumbnail_400x336.webp 400w,
+            ./assets/thumbnail_800x673.webp 800w,
+            ./assets/thumbnail_1200x1010.webp 1200w,
+            ./assets/thumbnail_1600x1347.webp 1600w,
+            ./assets/thumbnail_1900x1600.webp 1900w
+        "
+        sizes="(max-width: 80rem) 90vw, 40rem"
+    />
+
+    <header>
+        <h1>This week in margarine</h1>
+    </header>
+
+    <main>
+        <article>
+            <p>A quick update on the progress of my programming language margarine. It's build system, why it won't have a JIT, and other design decisions.</p>
+<p>For those who don't know margarine, it's my programming language that's meant to be a replacement for Lua in my own projects, <a href="../four-years-five-failures-one-compiler/">check out this post</a> if you want to learn more about it.</p>
+<p>Hello! So here's the thing, this week I decided that I wanted to be done with margarine as soon as possible.
+But I'm also quite tired of having way too many unfinished projects, so I had to decide on a to-do list that I needed to finish before I could call margarine done. And before you click off, a JIT was in this to-do list until yesterday.</p>
+<p>Here, I'll show you the to-do list.</p>
+<ul>
+<li>a basic JIT</li>
+<li>finishing up the build system</li>
+<li>a GC</li>
+<li>some bug fixes</li>
+<li>stdlib</li>
+</ul>
+<p>So me being me I went with the one I have never done before, the JIT.</p>
+<h2>The JIT</h2>
+<p>In a previous version of margarine I had used LLVM¹ to compile to native code and as far as I remember it was a horrible experience. Heck when I went back to margarine it didn't even compile even though literally nothing about my build system had changed.</p>
+<p>So this time I decided to use something easier, something shinier, something newer, something called <a href="https://cranelift.dev/">Cranelift</a>. Which claims to be faster than LLVM while admitting that it has less optimisations. That sounds like a good trade-off, right? It probably doesn't have many of the niche optimisations that LLVM has built up over the years but it has the important optimisations, right?</p>
+<p>That sounded amazing! Not only did it mean that I didn't need to deal with LLVM's jankness but also that the JIT will compile code faster!</p>
+<p>Now, I don't need margarine's JIT to be perfect or even optimized. I just want to add a JIT to the runtime to make it faster and I want to get it over with quickly so I could move onto the next thing in the to-do list. So I just made the JIT convert my interpreter one-to-one.</p>
+<p>I think this'll make more sense if I showed some code, so let's take the <code>AddInt</code> instruction. (fyi, margarine's interpreter is a stack based interpreter)</p>
+<pre><code class="language-rs">AddInt =&gt; {
+   let rhs = stack.pop().as_int();
+   let lhs = stack.pop().as_int();
+   stack.push(Value::Int(lhs + rhs))
+}
+</code></pre>
+<p>and so the JIT would just do that exact same thing but inlined. Which made the JIT the same as the interpreter except without the instruction over-head and any optimisations Cranelift could apply along-side it.</p>
+<p>Now this meant that the JIT would often generate redundant loads and stores, stuff like store x then immediately override x. Which was fine, I thought. It sounds like a basic optimisation, surely Cranelift wouldn't even break a sweat, right?</p>
+<p>Other than the fact that this isn't much of a basic optimisation, Cranelift doesn't even try to do anything about it. So I was left on my own.</p>
+<p>Is this an unsolvable problem? No.
+Is there nothing I can do about it? Certainly not.
+Is this a problem I wanted to have when I decided to JIT? No, but it is what it is.</p>
+<p>So I got onto brainstorming how I could go about solving this.
+For one, I could switch to a register based VM which would immediately eliminate any interaction with the stack since I can just use cranelift variables. But this would probably require me to rewrite my entire VM and some form of register-allocation would be practically necessary to keep the register count under 256 (one byte).</p>
+<p>Or I could convert the stack into cranelift variables at runtime, though that would require me to know the stack height at any given instruction. The idea would be to convert each stack slot to a Cranelift variable and simulate push &amp; pops.</p>
+<p>There's many ways I could make this JIT thing work, but after talking to people I'm not sure if it's even worth it. Sure, it'd make things faster but there's a lot more I should be focusing on right now (many things that when implemented would probably require the JIT to be reworked anyways).</p>
+<p>So I moved onto the next item on the list.</p>
+<p>¹: Writing this some part of me wishes I never ditched compiling to native code. I know it was the right decision but the <em>speed</em> is very alluring especially now that I don't even have a JIT. Woman in the red dress or something I dunno.</p>
+<h2>The build system</h2>
+<p>This part of margarine has gone through a few iterations already. At the start, I just had to specify every single file I wanted to include in the CLI tool, which led to commands like</p>
+<pre><code>margarine std std/duration std/list std/rand raylib raylib/keys raylib/window flappy_bird
+</code></pre>
+<p>This ability to be extremely granular on what files to import was a design decision that I wanted to preserve since margarine is meant to be an embeddable language. But of course, we also need margarine to stand on its own, so I had to figure out something else.</p>
+<p>The first thing I tried was to just copy Rust. I had a <code>build.toml</code> file where you could specify your dependencies, and your code would be in a <code>src/</code> directory with the entry point being a function named <code>main</code> in <code>src/main.mar</code>.</p>
+<p>This worked for a bit; the CLI tool would fetch the github repos of the dependencies, cache them in an <code>artifacts/</code> folder and compile and then run the program. But I wanted more, because if we're creating this entire build system, we might as well make it more powerful.</p>
+<p>That brings us to <code>build.mar</code>. When compiling, the <code>std</code> library is always included, and then the <code>build</code> function is called. The <code>std</code> library exposes the <code>CompilationUnit</code> type, an object that represents the current program's files and dependencies.</p>
+<pre><code class="language-rs">fn build() {
+ var unit = CompilationUnit::new();
+ unit.fetch(&quot;somelib&quot;, &quot;https://some.other/library&quot;);
+ unit.import(&quot;std/&quot;);
+ unit.build();
+}
+</code></pre>
+<p>This version isn't final because it doesn't handle libraries having dependencies. My current idea is to change the build function's signature to <code>fn build(): CompilationUnit</code>, letting libraries return their dependency info, allowing the creation of a single unit recursively.</p>
+<p>Side note, here's a funny thing I discovered while working on this. Since margarine can run with compiler errors, as long as you don't actually execute the errors, you can actually compile the current file with new libraries.</p>
+<pre><code class="language-rs">fn build() {
+ var unit = CompilationUnit::new();
+ unit.fetch(&quot;rand&quot;, &quot;https://github.com/todaymare/margarine-rand&quot;);
+ unit.import(&quot;&quot;);
+ unit.build()
+}
+
+fn main() {
+   print(rand::rand())
+}
+</code></pre>
+<p>which will work perfectly fine. Apart from spamming your terminal with compiler errors.</p>
+<p>Back to the build system, another thing I recently considered was to go with Go style imports. You know, just</p>
+<pre><code>extern &quot;https://github.com/todaymare/margarine-std&quot; as std
+</code></pre>
+<p>in the middle of the program. This would allow me to not have a build system, but I'm not sure. I'll have to think more about this whole build system thing.</p>
+<p>It's kind of annoying to constantly be working on things that aren't guaranteed to be finished, so I just decided to quickly write up something that's very important and is pretty much as complete as I'll ever make it be</p>
+<h2>The GC</h2>
+<blockquote>
+<p>is garbage collection just a metaphor for letting go?<br />
+- William Shakespeare</p>
+</blockquote>
+<p>We're coming to the end of the week and while I have experimented with a lot of things I wouldn't call those two complete just yet. However, the garbage collection for margarine is complete. It's definitely not the fastest or the most optimal but it does clean up garbage when needed so it's fine.</p>
+<p>What I did you might ask? I just copy-pasted the garbage collection I had for my old project <a href="https://github.com/todaymare/azurite">azurite</a>. I know I know lame! It's just a basic mark &amp; sweep world-stopping tracing garbage collector.</p>
+<p>There isn't much to say about it. It just goes through the stack, marks objects as live and then kills any that are dead. Oh and I guess it's only called when you fail to allocate an object.</p>
+<h2>End of the Week</h2>
+<p>Anyway, that's where margarine stands this week. A tiny bit more of a real boy.</p>
+<p>Thank you for reading so far and if you enjoyed this post or have feedback on any of the design decisions I talked above consider joining <a href="https://discord.gg/t7gNX8Kp72">my discord server</a>, or you can e-mail me at <a href="mailto:contact@daymare.net">contact@daymare.net</a>.</p>
+
+        </article>
+    </main>
+
+    <nav class="post-nav">
+        <a class="home" href="../../">Home</a>
+    </nav>
+    </div>
+    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+</body>
+</html>

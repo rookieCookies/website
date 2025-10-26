@@ -1,5 +1,87 @@
 <?xml version="1.0"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>daymare.net</title><id>https://daymare.net/</id><updated>2025-10-25T18:42:47.693828+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><link href="https://daymare.net/" rel="self"/><entry><title>Everybody&apos;s so Creative!</title><id>https://daymare.net/blogs/everbody-so-creative</id><updated>2025-10-19T08:39:24.740553972+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><category term="Blog"/><link href="https://daymare.net/blogs/everbody-so-creative" rel="alternate"/><published>2025-10-19T08:39:24.740553972+00:00</published><summary>&lt;p&gt;After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.&lt;/p&gt;</summary><content type="html">&lt;p&gt;After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>daymare.net</title><id>https://daymare.net/</id><updated>2025-10-26T06:46:17.331329+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><link href="https://daymare.net/" rel="self"/><entry><title>This week in margarine</title><id>https://daymare.net/blogs/this-week-in-margarine</id><updated>2025-10-26T06:46:11.276630437+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><category term="Blog"/><link href="https://daymare.net/blogs/this-week-in-margarine" rel="alternate"/><published>2025-10-26T06:46:11.276630437+00:00</published><summary>&lt;p&gt;A quick update on the progress of my programming language margarine. It&apos;s build system, why it won&apos;t have a JIT, and other design decisions.&lt;/p&gt;</summary><content type="html">&lt;p&gt;A quick update on the progress of my programming language margarine. It&apos;s build system, why it won&apos;t have a JIT, and other design decisions.&lt;/p&gt;
+&lt;p&gt;For those who don&apos;t know margarine, it&apos;s my programming language that&apos;s meant to be a replacement for Lua in my own projects, &lt;a href=&quot;../four-years-five-failures-one-compiler/&quot;&gt;check out this post&lt;/a&gt; if you want to learn more about it.&lt;/p&gt;
+&lt;p&gt;Hello! So here&apos;s the thing, this week I decided that I wanted to be done with margarine as soon as possible.
+But I&apos;m also quite tired of having way too many unfinished projects, so I had to decide on a to-do list that I needed to finish before I could call margarine done. And before you click off, a JIT was in this to-do list until yesterday.&lt;/p&gt;
+&lt;p&gt;Here, I&apos;ll show you the to-do list.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a basic JIT&lt;/li&gt;
+&lt;li&gt;finishing up the build system&lt;/li&gt;
+&lt;li&gt;a GC&lt;/li&gt;
+&lt;li&gt;some bug fixes&lt;/li&gt;
+&lt;li&gt;stdlib&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So me being me I went with the one I have never done before, the JIT.&lt;/p&gt;
+&lt;h2&gt;The JIT&lt;/h2&gt;
+&lt;p&gt;In a previous version of margarine I had used LLVM¹ to compile to native code and as far as I remember it was a horrible experience. Heck when I went back to margarine it didn&apos;t even compile even though literally nothing about my build system had changed.&lt;/p&gt;
+&lt;p&gt;So this time I decided to use something easier, something shinier, something newer, something called &lt;a href=&quot;https://cranelift.dev/&quot;&gt;Cranelift&lt;/a&gt;. Which claims to be faster than LLVM while admitting that it has less optimisations. That sounds like a good trade-off, right? It probably doesn&apos;t have many of the niche optimisations that LLVM has built up over the years but it has the important optimisations, right?&lt;/p&gt;
+&lt;p&gt;That sounded amazing! Not only did it mean that I didn&apos;t need to deal with LLVM&apos;s jankness but also that the JIT will compile code faster!&lt;/p&gt;
+&lt;p&gt;Now, I don&apos;t need margarine&apos;s JIT to be perfect or even optimized. I just want to add a JIT to the runtime to make it faster and I want to get it over with quickly so I could move onto the next thing in the to-do list. So I just made the JIT convert my interpreter one-to-one.&lt;/p&gt;
+&lt;p&gt;I think this&apos;ll make more sense if I showed some code, so let&apos;s take the &lt;code&gt;AddInt&lt;/code&gt; instruction. (fyi, margarine&apos;s interpreter is a stack based interpreter)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rs&quot;&gt;AddInt =&amp;gt; {
+   let rhs = stack.pop().as_int();
+   let lhs = stack.pop().as_int();
+   stack.push(Value::Int(lhs + rhs))
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and so the JIT would just do that exact same thing but inlined. Which made the JIT the same as the interpreter except without the instruction over-head and any optimisations Cranelift could apply along-side it.&lt;/p&gt;
+&lt;p&gt;Now this meant that the JIT would often generate redundant loads and stores, stuff like store x then immediately override x. Which was fine, I thought. It sounds like a basic optimisation, surely Cranelift wouldn&apos;t even break a sweat, right?&lt;/p&gt;
+&lt;p&gt;Other than the fact that this isn&apos;t much of a basic optimisation, Cranelift doesn&apos;t even try to do anything about it. So I was left on my own.&lt;/p&gt;
+&lt;p&gt;Is this an unsolvable problem? No.
+Is there nothing I can do about it? Certainly not.
+Is this a problem I wanted to have when I decided to JIT? No, but it is what it is.&lt;/p&gt;
+&lt;p&gt;So I got onto brainstorming how I could go about solving this.
+For one, I could switch to a register based VM which would immediately eliminate any interaction with the stack since I can just use cranelift variables. But this would probably require me to rewrite my entire VM and some form of register-allocation would be practically necessary to keep the register count under 256 (one byte).&lt;/p&gt;
+&lt;p&gt;Or I could convert the stack into cranelift variables at runtime, though that would require me to know the stack height at any given instruction. The idea would be to convert each stack slot to a Cranelift variable and simulate push &amp;amp; pops.&lt;/p&gt;
+&lt;p&gt;There&apos;s many ways I could make this JIT thing work, but after talking to people I&apos;m not sure if it&apos;s even worth it. Sure, it&apos;d make things faster but there&apos;s a lot more I should be focusing on right now (many things that when implemented would probably require the JIT to be reworked anyways).&lt;/p&gt;
+&lt;p&gt;So I moved onto the next item on the list.&lt;/p&gt;
+&lt;p&gt;¹: Writing this some part of me wishes I never ditched compiling to native code. I know it was the right decision but the &lt;em&gt;speed&lt;/em&gt; is very alluring especially now that I don&apos;t even have a JIT. Woman in the red dress or something I dunno.&lt;/p&gt;
+&lt;h2&gt;The build system&lt;/h2&gt;
+&lt;p&gt;This part of margarine has gone through a few iterations already. At the start, I just had to specify every single file I wanted to include in the CLI tool, which led to commands like&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;margarine std std/duration std/list std/rand raylib raylib/keys raylib/window flappy_bird
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This ability to be extremely granular on what files to import was a design decision that I wanted to preserve since margarine is meant to be an embeddable language. But of course, we also need margarine to stand on its own, so I had to figure out something else.&lt;/p&gt;
+&lt;p&gt;The first thing I tried was to just copy Rust. I had a &lt;code&gt;build.toml&lt;/code&gt; file where you could specify your dependencies, and your code would be in a &lt;code&gt;src/&lt;/code&gt; directory with the entry point being a function named &lt;code&gt;main&lt;/code&gt; in &lt;code&gt;src/main.mar&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This worked for a bit; the CLI tool would fetch the github repos of the dependencies, cache them in an &lt;code&gt;artifacts/&lt;/code&gt; folder and compile and then run the program. But I wanted more, because if we&apos;re creating this entire build system, we might as well make it more powerful.&lt;/p&gt;
+&lt;p&gt;That brings us to &lt;code&gt;build.mar&lt;/code&gt;. When compiling, the &lt;code&gt;std&lt;/code&gt; library is always included, and then the &lt;code&gt;build&lt;/code&gt; function is called. The &lt;code&gt;std&lt;/code&gt; library exposes the &lt;code&gt;CompilationUnit&lt;/code&gt; type, an object that represents the current program&apos;s files and dependencies.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rs&quot;&gt;fn build() {
+ var unit = CompilationUnit::new();
+ unit.fetch(&amp;quot;somelib&amp;quot;, &amp;quot;https://some.other/library&amp;quot;);
+ unit.import(&amp;quot;std/&amp;quot;);
+ unit.build();
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This version isn&apos;t final because it doesn&apos;t handle libraries having dependencies. My current idea is to change the build function&apos;s signature to &lt;code&gt;fn build(): CompilationUnit&lt;/code&gt;, letting libraries return their dependency info, allowing the creation of a single unit recursively.&lt;/p&gt;
+&lt;p&gt;Side note, here&apos;s a funny thing I discovered while working on this. Since margarine can run with compiler errors, as long as you don&apos;t actually execute the errors, you can actually compile the current file with new libraries.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rs&quot;&gt;fn build() {
+ var unit = CompilationUnit::new();
+ unit.fetch(&amp;quot;rand&amp;quot;, &amp;quot;https://github.com/todaymare/margarine-rand&amp;quot;);
+ unit.import(&amp;quot;&amp;quot;);
+ unit.build()
+}
+
+fn main() {
+   print(rand::rand())
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which will work perfectly fine. Apart from spamming your terminal with compiler errors.&lt;/p&gt;
+&lt;p&gt;Back to the build system, another thing I recently considered was to go with Go style imports. You know, just&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;extern &amp;quot;https://github.com/todaymare/margarine-std&amp;quot; as std
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;in the middle of the program. This would allow me to not have a build system, but I&apos;m not sure. I&apos;ll have to think more about this whole build system thing.&lt;/p&gt;
+&lt;p&gt;It&apos;s kind of annoying to constantly be working on things that aren&apos;t guaranteed to be finished, so I just decided to quickly write up something that&apos;s very important and is pretty much as complete as I&apos;ll ever make it be&lt;/p&gt;
+&lt;h2&gt;The GC&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;is garbage collection just a metaphor for letting go?&lt;br /&gt;
+- William Shakespeare&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We&apos;re coming to the end of the week and while I have experimented with a lot of things I wouldn&apos;t call those two complete just yet. However, the garbage collection for margarine is complete. It&apos;s definitely not the fastest or the most optimal but it does clean up garbage when needed so it&apos;s fine.&lt;/p&gt;
+&lt;p&gt;What I did you might ask? I just copy-pasted the garbage collection I had for my old project &lt;a href=&quot;https://github.com/todaymare/azurite&quot;&gt;azurite&lt;/a&gt;. I know I know lame! It&apos;s just a basic mark &amp;amp; sweep world-stopping tracing garbage collector.&lt;/p&gt;
+&lt;p&gt;There isn&apos;t much to say about it. It just goes through the stack, marks objects as live and then kills any that are dead. Oh and I guess it&apos;s only called when you fail to allocate an object.&lt;/p&gt;
+&lt;h2&gt;End of the Week&lt;/h2&gt;
+&lt;p&gt;Anyway, that&apos;s where margarine stands this week. A tiny bit more of a real boy.&lt;/p&gt;
+&lt;p&gt;Thank you for reading so far and if you enjoyed this post or have feedback on any of the design decisions I talked above consider joining &lt;a href=&quot;https://discord.gg/t7gNX8Kp72&quot;&gt;my discord server&lt;/a&gt;, or you can e-mail me at &lt;a href=&quot;mailto:contact@daymare.net&quot;&gt;contact@daymare.net&lt;/a&gt;.&lt;/p&gt;
+</content></entry><entry><title>Everybody&apos;s so Creative!</title><id>https://daymare.net/blogs/everbody-so-creative</id><updated>2025-10-19T08:39:24.740553972+00:00</updated><author><name>daymare</name><uri>https://daymare.net/</uri></author><category term="Blog"/><link href="https://daymare.net/blogs/everbody-so-creative" rel="alternate"/><published>2025-10-19T08:39:24.740553972+00:00</published><summary>&lt;p&gt;After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.&lt;/p&gt;</summary><content type="html">&lt;p&gt;After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.&lt;/p&gt;
 &lt;p&gt;Hi, it’s me again. Back at it with another rant thinly disguised as a &amp;quot;think piece.&amp;quot;&lt;/p&gt;
 &lt;h2&gt;The Question Nobody Wants to Answer&lt;/h2&gt;
 &lt;p&gt;Have you ever wanted to build something simple in Rust?
