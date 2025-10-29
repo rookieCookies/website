@@ -82,6 +82,6 @@ Maybe one day the novelty will wear off, and Rust will chill out.
 
 Until then, I'll be over here using `glam`.
 
-If you enjoyed this post, considering tipping me on- well, I haven't set up my ko-fi yet, but I'd love it if you could whisper 'nice post' at your screen for now.
+If you enjoyed this post, I'd love it if you could whisper 'nice post' at your screen... [or drop me a coffee](https://ko-fi.com/todaymare)
 
 P.S grammarly forked me over vro 🥀

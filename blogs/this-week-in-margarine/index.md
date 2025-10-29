@@ -120,4 +120,4 @@ There isn't much to say about it. It just goes through the stack, marks objects 
 ## End of the Week
 Anyway, that's where margarine stands this week. A tiny bit more of a real boy.
 
-Thank you for reading so far and if you enjoyed this post or have feedback on any of the design decisions I talked above consider joining [my discord server](https://discord.gg/t7gNX8Kp72), or you can e-mail me at [contact@daymare.net](mailto:contact@daymare.net).
+Thank you for reading so far and if you enjoyed this post or have feedback on any of the design decisions I talked above consider joining [my discord server](https://discord.gg/t7gNX8Kp72), or you can e-mail me at [contact@daymare.net](mailto:contact@daymare.net). Or if you really enjoyed it, consider [buying me a cup of coffee](https://ko-fi.com/todaymare)

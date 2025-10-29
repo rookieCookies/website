@@ -182,4 +182,4 @@ After going cold-turkey on abstractions, I realized something worse than ineffic
 
 For those who may want to check out the source code for the final version of the game [here you go](https://github.com/todaymare/factory-game)
 
-Maybe there's a conclusion to draw from this story, in any case I hope you enjoyed it.  
+Maybe there's a conclusion to draw from this story, in any case I hope you enjoyed it. And if you did, consider [buying me a cup of coffee](https://ko-fi.com/todaymare)  
