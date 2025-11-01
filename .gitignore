@@ -1,2 +1,6 @@
 target/
 hidden_blogs/
+graph_data.py
+analytics.csv
+.DS_Store
+.vscode/

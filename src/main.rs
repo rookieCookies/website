@@ -2,9 +2,10 @@ use std::{fmt::Write, time::SystemTime};
 
 use atom_syndication::Category;
 use chrono::Datelike;
-use image::codecs::webp::WebPEncoder;
+use markdown::{Options, ParseOptions};
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use rss_gen::{generate_rss, RssVersion};
+use webp::WebPConfig;
 
 fn main() {
     let index_template = include_str!("../index_template.html");
@@ -76,10 +77,15 @@ fn main() {
             break;
         }
 
-        let description_html = markdown::to_html(&description);
+        let description_html = markdown::to_html_with_options(
+            &description,
+            &Options::default(),
+        ).unwrap();
+
+
         let thumbnail_file = format!("{}/thumbnail.png", ident);
         let thumbnail = if std::fs::exists(&thumbnail_file).unwrap() { thumbnail_file.as_str() }
-                        else { "https://placehold.co/1900x1600" };
+                        else { "https://placehold.co/1900x160" };
 
         if !std::fs::exists(format!("{ident}/assets")).unwrap() {
             std::fs::create_dir(format!("{ident}/assets")).unwrap();
@@ -88,7 +94,7 @@ fn main() {
         // downscale thumbnail & convert to webp
         'b: {
             // if we already have generated the thumbnail and the file is newer than the source, skip
-            let thumbnail_webp = format!("{}/assets/thumbnail_1900x1600.webp", ident);
+            let thumbnail_webp = format!("{}/assets/banner_1600x1347.webp", ident);
             if std::fs::exists(&thumbnail_webp).unwrap() {
                 let thumb_meta = std::fs::metadata(&thumbnail_webp).unwrap();
                 let source_meta = std::fs::metadata(&thumbnail_file).unwrap();
@@ -106,12 +112,52 @@ fn main() {
             let img = image::open(&thumbnail_file).unwrap();
             assert!(img.width() == 1900 && img.height() == 1600, "thumbnail image must be 1900x1600 pixels");
 
-            for size in [400, 800, 1200, 1600, 1900] {
+            for size in [304, 400, 800] {
                 let resized = img.resize_exact(size, size * 1600 / 1900, image::imageops::FilterType::Lanczos3);
+                let rgba = resized.to_rgba8();
                 let output_path = format!("{}/assets/thumbnail_{}x{}.webp", ident, size, size * 1600 / 1900);
-                let mut output_file = std::fs::File::create(&output_path).unwrap();
-                let encoder = WebPEncoder::new_lossless(&mut output_file);
-                encoder.encode(&resized.to_rgba8(), resized.width(), resized.height(), image::ExtendedColorType::Rgba8).unwrap();
+
+                let encoder = webp::Encoder::from_rgba(&rgba, resized.width(), resized.height());
+
+                let mut config = WebPConfig::new().unwrap();
+                config.lossless = 0;
+                config.quality = 85.0;
+                config.method = 6;
+                config.sns_strength = 60;
+                config.filter_strength = 30;
+                config.filter_sharpness = 4;
+                config.autofilter = 1;
+                config.alpha_compression = 1;
+                config.alpha_quality = 90;
+                config.pass = 2;
+                config.use_sharp_yuv = 1;
+                config.exact = 0;
+                
+                let data = encoder.encode_advanced(&config).unwrap();
+                std::fs::write(&output_path, &*data).unwrap();
+            }
+
+            println!("generating banner images for {ident}");
+
+            for size in [400, 800, 1200, 1600] {
+                let resized = img.resize_exact(size, size * 1600 / 1900, image::imageops::FilterType::Lanczos3);
+                let rgba = resized.to_rgba8();
+                let output_path = format!("{}/assets/banner_{}x{}.webp", ident, size, size * 1600 / 1900);
+
+                let encoder = webp::Encoder::from_rgba(&rgba, resized.width(), resized.height());
+
+                let mut config = WebPConfig::new().unwrap();
+                config.lossless = 1;
+                config.quality = 100.0; // ignored when lossless, but explicit
+                config.method = 6;
+                config.near_lossless = 90; // use 100 for true lossless
+                config.exact = 1;
+                config.use_sharp_yuv = 1;
+                config.alpha_compression = 1;
+                config.alpha_quality = 100;
+                
+                let data = encoder.encode_advanced(&config).unwrap();
+                std::fs::write(&output_path, &*data).unwrap();
             }
             
         }
@@ -148,6 +194,99 @@ fn main() {
             .replace("<!-- expand-path -->", &ident)
             .replace("<!-- expand-body -->", &html);
 
+
+        // replace ~~any~~ with strikethrough
+        let template = {
+            let mut output = String::new();
+            let mut chars = template.chars().peekable();
+            while let Some(c) = chars.next() {
+                if c == '~' && chars.peek() == Some(&'~') {
+                    // skip the next '~'
+                    chars.next();
+                    output.push_str("<del>");
+                    while let Some(nc) = chars.next() {
+                        if nc == '~' && chars.peek() == Some(&'~') {
+                            // skip the next '~'
+                            chars.next();
+                            output.push_str("</del>");
+                            break;
+                        } else {
+                            output.push(nc);
+                        }
+                    }
+                } else {
+                    output.push(c);
+                }
+            }
+            output
+        };
+
+
+        // replace <img src="%.webm"> with <video> tag
+        let template = {
+            let mut output = String::new();
+            let mut chars = template.chars().peekable();
+            while let Some(c) = chars.next() {
+                if c == '<' && chars.peek() == Some(&'i') {
+                    let mut tag = String::new();
+                    tag.push(c);
+                    while let Some(nc) = chars.next() {
+                        tag.push(nc);
+                        if nc == '>' {
+                            break;
+                        }
+                    }
+                    if tag.contains("<img") && tag.contains("src=\"") && tag.contains(".webm\"") && tag.contains("alt=\"auto\"") {
+                        // extract src
+                        let src_start = tag.find("src=\"").unwrap() + 5;
+                        let src_end = tag[src_start..].find('"').unwrap() + src_start;
+                        let src = &tag[src_start..src_end];
+                        output.push_str(&format!(
+                            "<video autoplay loop muted playsinline data-src=\"{src}\" type=\"video/webm\"></video>",
+                        ));
+                    } else {
+                        output.push_str(&tag);
+                    }
+                } else {
+                    output.push(c);
+                }
+            }
+            output
+        };
+
+        // replace all aref links to open a new tab except the home class link
+        let template = {
+            let mut output = String::new();
+            let mut chars = template.chars().peekable();
+            while let Some(c) = chars.next() {
+                if c == '<' && chars.peek() == Some(&'a') {
+                    let mut tag = String::new();
+                    tag.push(c);
+                    while let Some(nc) = chars.next() {
+                        tag.push(nc);
+                        if nc == '>' {
+                            break;
+                        }
+                    }
+                    if tag.contains("<a") && tag.contains("href=\"") && !tag.contains("class=\"home\"") {
+                        // insert target="_blank" rel="noopener noreferrer"
+                        let insert_pos = tag.find('>').unwrap();
+                        let (start, end) = tag.split_at(insert_pos);
+                        let new_tag = format!(
+                            "{} target=\"_blank\" rel=\"noopener noreferrer\"{}",
+                            start, end
+                        );
+                        output.push_str(&new_tag);
+                    } else {
+                        output.push_str(&tag);
+                    }
+                } else {
+                    output.push(c);
+                }
+            }
+            output
+        };
+
         std::fs::write(format!("{ident}/index.html"), template).unwrap();
 
         // generate rss item
@@ -159,12 +298,10 @@ fn main() {
             "
                 <a class=\"blog-card\" href=\"{ident}\">
                     <!-- <img src=\"{thumbnail}\" alt=\"Blog Image\"> -->
-                    <img src=\"{ident}/assets/thumbnail_1900x1600.webp\" alt=\"Blog Image\" srcset=\"
+                    <img src=\"{ident}/assets/thumbnail_800x673.webp\" alt=\"Blog Image\" srcset=\"
+                        {ident}/assets/thumbnail_304x256.webp 304w,
                         {ident}/assets/thumbnail_400x336.webp 400w,
                         {ident}/assets/thumbnail_800x673.webp 800w,
-                        {ident}/assets/thumbnail_1200x1010.webp 1200w,
-                        {ident}/assets/thumbnail_1600x1347.webp 1600w,
-                        {ident}/assets/thumbnail_1900x1600.webp 1900w
                     \" sizes=\"19rem\">
                     <span class=\"titlecard\"><h3>{title}</h3></span>
                     <h4>{read_time} min. read</h4>

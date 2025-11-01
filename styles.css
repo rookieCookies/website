@@ -6,6 +6,16 @@
     --color-text: #dad7cd;
 }
 
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/DancingScript-Bold.ttf') format('truetype');
+
+}
+
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--color-text);
@@ -57,8 +67,7 @@ hr {
     margin-top: 0.0rem;
     font-size: 3rem;
     margin-bottom: 0rem;
-    font-family: 'Dancing Script', cursive;
-    font-weight: bold;
+    font-family: 'Dancing Script', cursive;;
 }
 .hero p {
     font-size: 1.25rem;

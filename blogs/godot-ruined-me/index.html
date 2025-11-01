@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <title>Godot Ruined My Sense of Speed – daymare.net</title>
     <link rel="stylesheet" href="../../blog_styles.css">
-    <link rel="preload" as="image" href="./thumbnail.png">
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": "Godot Ruined My Sense of Speed",
-            "image": "https://daymare.net/blogs/godot-ruined-me/thumbnail.png",
+            "image": "https://daymare.net/blogs/godot-ruined-me/assets/thumbnail_1200x1010.webp",
             "author": {
                 "@type": "Person",
                 "name": "Todaymare"
@@ -29,6 +28,8 @@
         }
     </script>
     <script defer data-domain="daymare.net" src="https://plausible.io/js/script.js"></script>
+
+    <script src="../../blog.js" defer></script>
 </head>
 <body>
     <div class="text-body">
@@ -41,12 +42,12 @@
     <meta property="og:description" content="Godot didn’t just ruin my game. It ruined how I think about performance and abstraction. What started as a simple voxel prototype spiraled into an existential crisis">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://daymare.net/blogs/godot-ruined-me/">
-    <meta property="og:image" content="https://daymare.net/blogs/godot-ruined-me/thumbnail.png">
+    <meta property="og:image" content="https://daymare.net/blogs/godot-ruined-me/assets/thumbnail_1200x1010.webp">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Godot Ruined My Sense of Speed">
     <meta name="twitter:description" content="Godot didn’t just ruin my game. It ruined how I think about performance and abstraction. What started as a simple voxel prototype spiraled into an existential crisis">
-    <meta name="twitter:image" content="https://daymare.net/blogs/godot-ruined-me/thumbnail.png">
+    <meta name="twitter:image" content="https://daymare.net/blogs/godot-ruined-me/assets/thumbnail_1200x1010.webp">
 
     <link rel="canonical" href="https://daymare.net/blogs/godot-ruined-me/">
 
@@ -59,11 +60,10 @@
 
     <img loading="eager" class="thumbnail" alt="Thumbnail for Godot Ruined My Sense of Speed blog post"
         srcset="
-            ./assets/thumbnail_400x336.webp 400w,
-            ./assets/thumbnail_800x673.webp 800w,
-            ./assets/thumbnail_1200x1010.webp 1200w,
-            ./assets/thumbnail_1600x1347.webp 1600w,
-            ./assets/thumbnail_1900x1600.webp 1900w
+            ./assets/banner_400x336.webp 400w,
+            ./assets/banner_800x673.webp 800w,
+            ./assets/banner_1200x1010.webp 1200w,
+            ./assets/banner_1600x1347.webp 1600w,
         "
         sizes="(max-width: 80rem) 90vw, 40rem"
     />
@@ -112,7 +112,7 @@ But see, I never tried throwing more quarries at it because I assumed any slow-d
 In the simplest voxel engines, you’d generate a quad for every block face — slow, but simple.
 For the prototype, I added a very naive culling algorithm so it wouldn’t generate hidden faces.</p>
 <p>So far so good. This entire algorithm was implemented in Rust (<em>blazing fast!</em>).</p>
-<p>Godot exposes a type called <a href="https://docs.godotengine.org/en/stable/classes/class_surfacetool.html">SurfaceTool</a>, which isn't technically the lowest-level API they provide but it is pretty much a drop-in replacement for pushing individual vertices into a list.</p>
+<p>Godot exposes a type called <a href="https://docs.godotengine.org/en/stable/classes/class_surfacetool.html" target="_blank" rel="noopener noreferrer">SurfaceTool</a>, which isn't technically the lowest-level API they provide but it is pretty much a drop-in replacement for pushing individual vertices into a list.</p>
 <p>Anyway, here’s how that looked in code – calling into Godot from Rust, in order to draw a quad:</p>
 <pre><code class="language-rust">fn draw_quad(st: &amp;mut SurfaceTool, k: &amp;mut i32, quad: Quad) {
     let normal = match quad.direction {
@@ -157,7 +157,7 @@ For the prototype, I added a very naive culling algorithm so it wouldn’t gener
     *k += 4;
 }
 </code></pre>
-<p>You might notice there’s not much difference, so really, how bad could <a href="https://docs.godotengine.org/en/stable/classes/class_surfacetool.html">SurfaceTool</a> be?</p>
+<p>You might notice there’s not much difference, so really, how bad could <a href="https://docs.godotengine.org/en/stable/classes/class_surfacetool.html" target="_blank" rel="noopener noreferrer">SurfaceTool</a> be?</p>
 <p>8 milliseconds per chunk! Not terrible – until you realize doing it manually takes 300 microseconds. Twenty-seven times faster.</p>
 <p>And that’s not even counting Godot’s mesh conversion time, which I’m pretty sure happens way later.</p>
 <p>At this point you can probably guess what went wrong.
@@ -193,15 +193,15 @@ Now, after coming from Godot my perception of performance was so ruined that I w
 <p>Luckily for me, I am not skilled enough to be able to write an algorithm that's able to heavily cache it so I decided to settle for just reconstructing the entire graph every frame. And guess what? It never became a performance problem.</p>
 <p>Well that was simple enough, I'll also mention the things that happened after all of that.<br />
 I went on a 3 week journey to optimize the heck out of the voxel engine, during which I switched from OpenGL to WGPU because OpenGL on MacOS does not support Shader Storage Buffer Objects (SSBOs)</p>
-<p>I might make a post on how I optimized the voxel engine (<a href="https://www.youtube.com/watch?v=40JzyaOYJeY">check out this video by Vercidium</a>) but by the end of it I had a voxel engine with async chunk &amp; mesh generation, running at 144FPS+ on an M2 MacBook using 3 GB of ram with a render distance of 3072 blocks in every direction.</p>
+<p>I might make a post on how I optimized the voxel engine (<a href="https://www.youtube.com/watch?v=40JzyaOYJeY" target="_blank" rel="noopener noreferrer">check out this video by Vercidium</a>) but by the end of it I had a voxel engine with async chunk &amp; mesh generation, running at 144FPS+ on an M2 MacBook using 3 GB of ram with a render distance of 3072 blocks in every direction.</p>
 <p><img src="assets/voxel-engine.png" alt="Voxel Engine Picture" /></p>
 <h1>The conclusion?</h1>
 <p>I can't say this story has a very good conclusion because the game never ended up getting finished. Mostly because I couldn't figure out a way to make a factory game feel nice to play in a 3D voxel sandbox.</p>
 <p>What I learned from all this wasn’t really about Godot or performance – it was about trust. Or the lack of it.</p>
 <p>I thought I was writing about slow code, but looking back, I was really writing about black boxes I couldn’t see inside.</p>
 <p>After going cold-turkey on abstractions, I realized something worse than inefficiency: bloat. It turns out working in a simple, honest codebase – one where you see everything – is just more fun.</p>
-<p>For those who may want to check out the source code for the final version of the game <a href="https://github.com/todaymare/factory-game">here you go</a></p>
-<p>Maybe there's a conclusion to draw from this story, in any case I hope you enjoyed it. And if you did, consider <a href="https://ko-fi.com/todaymare">buying me a cup of coffee</a></p>
+<p>For those who may want to check out the source code for the final version of the game <a href="https://github.com/todaymare/factory-game" target="_blank" rel="noopener noreferrer">here you go</a></p>
+<p>Maybe there's a conclusion to draw from this story, in any case I hope you enjoyed it. And if you did, consider <a href="https://ko-fi.com/todaymare" target="_blank" rel="noopener noreferrer">buying me a cup of coffee</a></p>
         </article>
     </main>
 

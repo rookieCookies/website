@@ -10,6 +10,7 @@ rss-gen = "*"
 atom_syndication = "*"
 image = "*"
 rayon = "*"
+webp = "*"
 
 [profile.dev.package.image]
 opt-level = 3
