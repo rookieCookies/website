@@ -11,6 +11,7 @@ atom_syndication = "*"
 image = "*"
 rayon = "*"
 webp = "*"
+base64 = "*"
 
 [profile.dev.package.image]
 opt-level = 3

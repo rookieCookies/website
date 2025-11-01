@@ -29,6 +29,14 @@
     </script>
 
     <script src="../../blog.js" defer></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".thumbnail.full").forEach(img => {
+        if (img.complete) img.classList.add("loaded");
+        else img.addEventListener("load", () => img.classList.add("loaded"));
+    });
+    });
+    </script>
 </head>
 <body>
     <div class="text-body">
@@ -55,20 +63,30 @@
         <span><time itemprop="datePublished" datetime="2025-10-05T14:36:34.509273115Z">Oct 5</time> | <span itemprop="author">by me</span></span>
         <span class="read-time">8 min. read</span>
     </div>
-    
 
-    <img loading="eager" class="thumbnail" alt="Thumbnail for Four years, Five failures, One compiler blog post"
-        srcset="
+    <div class="thumbnail-wrapper">
+        <img
+            class="thumbnail preview"
+            src="data:image/webp;base64, UklGRkgFAABXRUJQVlA4TDwFAAAvMUAKAAGFjSQleTfov2CHCiL6PwEI38qCh6a9AwDiDKBoBdM24dnXA7e1bSvRRmOXiFD7L4QSqAPGfTpgGkmyqlafSaHa/KN5IfwwULBtJElxtIK4J2/eY6b+TwD+qPjMBeE0mAaAEPSm3gQoCJFMTRm6TpIZu3tJz6R3gBUCyb7/y39V1ZEZt3Ae7jxlBokEAOgv6wSsIDMQPBPLBCjw8RdfgnZt24kk5rzqHjYzM9Onk+AcHIyzcBQOwxkwfjENl3TWkp40FYLcSJIcSfLsg+xTr79grwUG0yE5kmTXVir7K8QSh7ANA7AUVlpPOJRkJWzAsQ+EJ0kq/sOX3z6IlxhDjDFWy8tKpTzLGDFU2sBYYOU4ZCx2uNiFM8ZIWrM6GAsYc9MGFhErDUpiFzt27HJ9cCdII4E0DFEmTbFrmg1DjAy+wSCD0xCVKkBpNE9am+bJFAxjAJS0wS6XZxuKGmzSa5BcyQAoMVZ6M30ithFb5m5y6RWMKYkuXMKpPNm+qVEkg0TDUJZl2jQSbiW3zEAOlomxLMrYpimSI0bCKbAyeSzTJlquy2v8SYkDw4CNZQYQ0yRlm/I/tmUzRmYkxpoFlOfqLbYJOYtkdwidarcuzc3NzUDeVJpSImKkidvheVgsghDK5LEs09xeQh3NV/X5/Xi+SC8HdQWEKNdQAcVCJ/NBuTwhlF9kLMtbd9fb7twNX1w/6OjghgZloZniAIWu54HuaRVFnEwZzup5tvp0r3bztd2bMjgGBUnsUJj+V/8XY6moWBSLslzBMlf6TA/aCpPJGYsyIloR8l5s1RULFUxZaxhtPexhvyrr/u3t1K7Ktcy6Vi3U2emAPVJB1cVihTJ5IzJEtFI4DxJc67V58/z/8/x+urcvvIdOj8c5ljyoo+fV+vn54vOT9+GH9y+vvfx6WX9MmTN+fL2//r99dm4rcEJRocAyI5EmtFIIVXCFswn3Q3elOJ0ndLp+d7crZrHy+r2+fLvl3/Pr+OXvU926Fh7i69fOPf+rZQiJCkWxSBoMZZpISZQ0oK51zsX5+8ufp12ud78eJ6OHv4tn2h51uIeq22EtVHbs3G/ZjSBWiBWdmA5imt2kFCCDKmhR5IhXhC5PN/nln6N66G/3femgrlnBHetYh6uHLDTSKCYbijSxhDspUog0CZW7s/W8Ym7tIuffhc5QqKwil1IOakoh1KYglP99nUk0UoQoQXVVIYRWc+0KlnHKEc/qLKC5BqEQi6REdoZYWiMKIcO65THUrZYWhjyHKBQglhOZCy6EC3LH6QatEbHzPFCRK149/X37XQdSaKMGkcEgsYyxmlHiETemrspeq9BmZUWxC0X1yGbQursRxVSWVXpQoc0SUsspFArlQ5eJtJprXll/7OGX7vj8Ji6Ei9pyBlBw0a/HvXuqVsViWSSnGWXj0oyz17c8vf7//1ulU2UNxwxRSOUCos5eX3/69f17vb6cMLd0qpNhbIYGIfT+Or9/bSK5cdBySxs6hjjH59Xi4XLCHLfcCbphsxmbB+VczuJBREst0HZXfxYpXSVG8xjaSE+zEZtBCMUYjXQxpoH5EIeIW+8kVBecRhljoxlbT2qeyeTVyhBjNnTbbkAzujPnGVvPHe+ATVdaP2w2ohlbBl605LURM1+EOYixSDImTpMCptfG3VcaDoxFS57RHhdsZMOVJh3EMpTW8mcpNjMJ2HilUf1/YDIgtsG2jQvz72uNACfEahFaNqZOw2XbeqXF/tsMlqqzwXw/ryFg05WG00jPnaYMweOf7m5yCw=="
+            alt="Low-res preview"
+            width="1900"
+            height="1600"
+        />
+        <img
+            class="thumbnail full"
+            srcset="
             ./assets/banner_400x336.webp 400w,
             ./assets/banner_800x673.webp 800w,
             ./assets/banner_1200x1010.webp 1200w,
-            ./assets/banner_1600x1347.webp 1600w,
-        "
-        sizes="(max-width: 80rem) 90vw, 40rem"
-         
-        width="1900" 
-        height="1600" 
-    />
+            ./assets/banner_1600x1347.webp 1600w
+            "
+            sizes="(max-width: 80rem) 90vw, 40rem"
+            loading="lazy"
+            alt="Thumbnail for Four years, Five failures, One compiler blog post"
+            width="1900"
+            height="1600"
+        />
+    </div>
 
     <header>
         <h1>Four years, Five failures, One compiler</h1>

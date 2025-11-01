@@ -29,6 +29,14 @@
     </script>
 
     <script src="../../blog.js" defer></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".thumbnail.full").forEach(img => {
+        if (img.complete) img.classList.add("loaded");
+        else img.addEventListener("load", () => img.classList.add("loaded"));
+    });
+    });
+    </script>
 </head>
 <body>
     <div class="text-body">
@@ -55,20 +63,30 @@
         <span><time itemprop="datePublished" datetime="2025-10-12T21:09:01.870614127Z">Oct 12</time> | <span itemprop="author">by me</span></span>
         <span class="read-time">9 min. read</span>
     </div>
-    
 
-    <img loading="eager" class="thumbnail" alt="Thumbnail for Godot Ruined My Sense of Speed blog post"
-        srcset="
+    <div class="thumbnail-wrapper">
+        <img
+            class="thumbnail preview"
+            src="data:image/webp;base64, UklGRtwDAABXRUJQVlA4TNADAAAvMUAKAAFFbdtAynvhD3k3gIj+TwBPqiYIDg8UQpLkDMIlgPXXvPtIQCZtm8u5c0zBFLVtAwVGn7s3/sgGof8TANYG8LuYmByh4RsvGAQ2q1Y1m+18L6HlgG7bWqLyep+67lnYbGL++l9vMYGIZHJ3IEIE7TmEYEdtJElSRPTwp7WI9tVHOWzbNpDUXm7mX/sHuEjhQJLUuPEhwUjgBFaf+Ob3I2WFk+sQI7twCO4H4+Fg9vAjQTju3Zc7PR8n3OGdqNDDCdlVocSeIHL7avdlpXQYY5wORx4d4mYQSp4wjfaGDdI0JgPiRN4uMAsndJzWABSmeutwuOuUPch7QA8/gkxub3cwKVltqP+kCj0hUh6+/GBWpP5fWBMFtezKOBwqpS/3Q1efcLQ3hkVmwwK7RugN90lW/8jdQcZ5I8qdN/N+7WX1/UhR/XN3MkrH1Mk0lB8wpSHf05fvTiWiQlpkDsdD0jgJDWnQG5RAIo+yZI+t2tvKPQl3eIELmJLC00W30qz9PWm0+5AJFxPhJasPMn+aNPaJmCAT20qi6lb5o9Lwg+6QgZMMnpCUDZjRrYekoVq8k3lIUNEJYmKVr6jgAK9kiTzs2rczC4GJdGR3K7yw6tkqpm9Fmrnlciio0jnoTgIlpgW5UOBVff+82qt8tnie9V/9W+/ztW4j5X1p7OAC0kOk9pQL9e3+fqXntsn71ddfW13zK/to1/el6jHcAc5+FRklFmQoUiSjuWTPsw1MG/J48SEgDr/mGMMp70iD7ggarkP7tdoccrcgaQNx6YHRPDSQhybikN2TRh+Eo0J7rgYX2ZKJOIOtzRk+aBgkw7uyOI1W3wbIRQE4QRaMV/tD39hLoYHEN9vGi1yYs8FgmKY0Jryd8aBSi9md8Mvi1///u/YX+8+aYJP/3lzu+9LeLl8nlVA6lzi4gdldOo+yYhopc9Pf85f8s17Z83prn+nz5GCXS0nDPL1dOYkFOcnQppdsxhXU+rW2RGhpmKeXzkRxpgacupgrsKKpkGFI1zoge0bFjA48TTDDlgYZMPXpvTnZrQW9b4YljSm84tRKn4i5Z3F2mOBMDR6ShnV664YzLCAtIQ1T6PKMqG/sFdnBggCGKkzNCuChkkc7z4xM0kxosKBBcQYZHjkgOzJnRpKFSG2BBdE8W4ciOOjcyqzkJFNghgCcZpe1rmRxPOneIokOlkhpgCdJg2CMkf0JBRIpCyl/MucD0hjiruxjT53ISFlI1eB01eWU/R3qJqmOq+/Ip0pjWHdl9mFlRSYM4HYhxWAbEjwijVQLM6IA"
+            alt="Low-res preview"
+            width="1900"
+            height="1600"
+        />
+        <img
+            class="thumbnail full"
+            srcset="
             ./assets/banner_400x336.webp 400w,
             ./assets/banner_800x673.webp 800w,
             ./assets/banner_1200x1010.webp 1200w,
-            ./assets/banner_1600x1347.webp 1600w,
-        "
-        sizes="(max-width: 80rem) 90vw, 40rem"
-         
-        width="1900" 
-        height="1600" 
-    />
+            ./assets/banner_1600x1347.webp 1600w
+            "
+            sizes="(max-width: 80rem) 90vw, 40rem"
+            loading="lazy"
+            alt="Thumbnail for Godot Ruined My Sense of Speed blog post"
+            width="1900"
+            height="1600"
+        />
+    </div>
 
     <header>
         <h1>Godot Ruined My Sense of Speed</h1>

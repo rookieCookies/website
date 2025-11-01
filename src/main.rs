@@ -95,6 +95,7 @@ fn main() {
         'b: {
             // if we already have generated the thumbnail and the file is newer than the source, skip
             let thumbnail_webp = format!("{}/assets/banner_1600x1347.webp", ident);
+
             if std::fs::exists(&thumbnail_webp).unwrap() {
                 let thumb_meta = std::fs::metadata(&thumbnail_webp).unwrap();
                 let source_meta = std::fs::metadata(&thumbnail_file).unwrap();
@@ -105,9 +106,6 @@ fn main() {
             } else {
                 println!("generating thumbnails for {ident}");
             }
-
-
-
 
             let img = image::open(&thumbnail_file).unwrap();
             assert!(img.width() == 1900 && img.height() == 1600, "thumbnail image must be 1900x1600 pixels");
@@ -139,7 +137,7 @@ fn main() {
 
             println!("generating banner images for {ident}");
 
-            for size in [400, 800, 1200, 1600] {
+            for size in [50, 400, 800, 1200, 1600] {
                 let resized = img.resize_exact(size, size * 1600 / 1900, image::imageops::FilterType::Lanczos3);
                 let rgba = resized.to_rgba8();
                 let output_path = format!("{}/assets/banner_{}x{}.webp", ident, size, size * 1600 / 1900);
@@ -184,6 +182,12 @@ fn main() {
         };
 
 
+        let base64_thumbnail = {
+            let thumb_img = std::fs::read(&format!("{}/assets/banner_50x42.webp", ident)).unwrap();
+            base64::encode(&thumb_img)
+        };
+
+
         let iso_date = date.format("%Y-%m-%dT%H:%M:%S%.fZ").to_string();
         let template = blog_template
             .replace("<!-- expand-date -->", &format!("{} {}", month, date.day()))
@@ -192,7 +196,8 @@ fn main() {
             .replace("<!-- expand-read-time -->", &read_time.to_string())
             .replace("<!-- expand-description -->", &description)
             .replace("<!-- expand-path -->", &ident)
-            .replace("<!-- expand-body -->", &html);
+            .replace("<!-- expand-body -->", &html)
+            .replace("<!-- expand-blurbase64 -->", &base64_thumbnail);
 
 
         // replace ~~any~~ with strikethrough

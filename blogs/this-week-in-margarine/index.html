@@ -29,6 +29,14 @@
     </script>
 
     <script src="../../blog.js" defer></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".thumbnail.full").forEach(img => {
+        if (img.complete) img.classList.add("loaded");
+        else img.addEventListener("load", () => img.classList.add("loaded"));
+    });
+    });
+    </script>
 </head>
 <body>
     <div class="text-body">
@@ -55,20 +63,30 @@
         <span><time itemprop="datePublished" datetime="2025-10-26T06:46:11.276630437Z">Oct 26</time> | <span itemprop="author">by me</span></span>
         <span class="read-time">8 min. read</span>
     </div>
-    
 
-    <img loading="eager" class="thumbnail" alt="Thumbnail for This week in margarine blog post"
-        srcset="
+    <div class="thumbnail-wrapper">
+        <img
+            class="thumbnail preview"
+            src="data:image/webp;base64, UklGRmwGAABXRUJQVlA4TGAGAAAvMUAKAAGHbdtIEjxJxp49Xf8F71NDRP8nQFUliW1335D2wzkA2raTeWB3kswM9eteryxR5+mKpCpgJckfVR0gsY14jG0+tHmpGjCKJElRLTM86fwr5VNgtG0b48L+f+XgVKAmkiRlJNwzGPgIs/ev5CWshP5PAPh1VlE90C86YDYHE1UrEHQC0I9dm9eNfhWc047GGO+tiH9xCt37nKCgbRsm4U+7uwgiYgKwCR4TV9iw5WOQI9u2aitz7XPfd3f/RO6au+cUDaEInYgid3c6QOju7u7uPP33bJwuyJFtW7WVOc+9/+PumtODF9ERy52MBtAO2kFK6B79IiT67n7uOUuKbW3Ltuz7xt3dNblFFumfAdEZBA0ai+SSXDojIBPdkyZ3532eOyZAUiNJgiSZ5/Kn3PHo3r2DICAo8n+0iAlY8rXAX8997vs+9+k7cQDWzHqsp8fT0+Pp6TH8d7rPue9z3+mkgQlMAmkS9C8h6fv++ef77tNpAjOZpPMJWf9mSHJyv3OneXuFRCSB8PfFR/d9A51OA+s+HeCV8B/tJPcdmDtNYE4nyYcAZn7JwIikcxpIdxpY9+lEQ0QKZknzyj3DMJB+mT6Os7iTwCKJKNDMh1RJyM5AsMCZMCStJBSKEEnySnhZODDBIAcmIU2HoC+VQEoqLUyN6WXFhC8lgArWGiAQEJ9hB2gZLMP6MAEkiQiWko6AgPkkBAAAIQAvFAoBIAUBgMJCAQIQBH3OGcgGZRoAFA5FtByCSooQvAASiCKcDoBBEIQOYoSU9EFaDTirAYG8N4galKecyCLnEDIaEQCEkaJcMpGgEAACiTWTnGiQDGAEEFurPT02Jk7n3T3flTlmUraOYMH7gVMikOP97ueKYq2HX/o2DEgJ4A/DYq1OJclJn4OFF16Yruw8WP30ytMHz8Kpv06ueHFgz8PzxS45Yo33VokNHl0yO1Bov3qdPTB1IwwGQ3Jyd6eTpHLSOR1ovMSAvLhb7gw6971/f4olU2MEK7L33n4497b8UOw90poYtcJD+y9eLJZfPkVoYRAE4Uoq35U/QvhGG3dxwyh3RHr/9oybKkWLWWSoaOO1N27Bh4NpNJE7vTD1zcQ12XXz5s2z+/drCW9dkIRUpdOdhgq/CO/saPn7a1/+jcvn15mhJUSD7uEzvyoy9vKZZ4venZ5ft58r9yc+m8GjG7mp1cyPj71ZyBIEKamiAxBIcJwQwEUqiW/5yvz/Qh3uJ0cSMkqJA5dUoWoa1bA2YdbfyU3/lz4f/8eWLZcmnDy63TjNpjJSEAhiAgkhQPgWINJoZLYOx2bG1DQqLdKSVZEhX5+sip0J0z6unf1p6800WS3T+Kf9TbqbreGtiQBAAMI7fM4vQEbB1u3U8Wsj13eeT16aWChCia8ERDvDqIWFq549+LI5JT82JTrnvV/9OzbrSk3SgP8cBgaGAQAHwPo6Wrx7fNCfnfdn71prlszXmLTt2Lnxj+99ffj2YgGBKCffn/s8pY6IUC9LIYfDBQwwDIsZWCenBEGRdHXH7ED5sWLs/3Hs4OKVgVPfhs+WNl7ISwvarxl8PymVrYMlYx3K51mvgADFLKuHMAzDWjN5EwHZ/L/hrdzlZ18uP/526UXmwuBj8/T83v9cpdHX/fiwnU+XhrbMr8w4dYagoAAjLKOMGWYWs1ZSUYJEJj7wfWs98n14X+KP9xZbpzMycVx5xlROExozpc1pC/vu6hIxoTAYDCaDy8Kg0Zo1j7WGQkBGJGuZUF/pmI55pcoa6xJk6IndBj5kZlSCJRWCYDCpgWkxzZrJu0kAARlpfDtoMRwybAgE0l6kPOVwpXRKOEAlBwEZkxXzlQQBkMONMKQMTEQAlwwCIJcXXiBA5QhkMplmtICEAAIOhAByIRcADgVAjlhEuVxAGPHZi/iRSvgcF3K5gAO4ACKQAgBXLKJcDoClGSCAyQBCJCkCsEbIZJgAzTsGLBdDScyaVAI1CA2fq3F5NRiEgZgwMBJFCoRmrcwXZJMhEwzhfYMkzYRC0bxAExgBmOxil2vTogOsQCIKaRBMrDBggNrgMpBpDt+BCAkNwCgGWdO8W5syhM6HAhBptAJTeMIgZ4WdjCNPoA/f6wUsLZgMimG1zNAIMCE+/H0EMGS5Nu8BAuwQIOB/R/MSEyYTBiDTAnoI/hM="
+            alt="Low-res preview"
+            width="1900"
+            height="1600"
+        />
+        <img
+            class="thumbnail full"
+            srcset="
             ./assets/banner_400x336.webp 400w,
             ./assets/banner_800x673.webp 800w,
             ./assets/banner_1200x1010.webp 1200w,
-            ./assets/banner_1600x1347.webp 1600w,
-        "
-        sizes="(max-width: 80rem) 90vw, 40rem"
-         
-        width="1900" 
-        height="1600" 
-    />
+            ./assets/banner_1600x1347.webp 1600w
+            "
+            sizes="(max-width: 80rem) 90vw, 40rem"
+            loading="lazy"
+            alt="Thumbnail for This week in margarine blog post"
+            width="1900"
+            height="1600"
+        />
+    </div>
 
     <header>
         <h1>This week in margarine</h1>

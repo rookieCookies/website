@@ -145,3 +145,40 @@ hr {
   margin: 0rem 0rem;
   margin-top: 2rem;
 }
+
+.thumbnail-wrapper {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+}
+
+.thumbnail-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  margin-top: 0rem;
+}
+
+
+.thumbnail.preview {
+  filter: blur(10px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail.full {
+  opacity: 0;
+  position: relative;
+  z-index: 1;
+  
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail.full.loaded {
+  opacity: 1;
+}

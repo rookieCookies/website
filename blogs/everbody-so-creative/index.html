@@ -29,6 +29,14 @@
     </script>
 
     <script src="../../blog.js" defer></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".thumbnail.full").forEach(img => {
+        if (img.complete) img.classList.add("loaded");
+        else img.addEventListener("load", () => img.classList.add("loaded"));
+    });
+    });
+    </script>
 </head>
 <body>
     <div class="text-body">
@@ -55,20 +63,30 @@
         <span><time itemprop="datePublished" datetime="2025-10-19T08:39:24.740553972Z">Oct 19</time> | <span itemprop="author">by me</span></span>
         <span class="read-time">6 min. read</span>
     </div>
-    
 
-    <img loading="eager" class="thumbnail" alt="Thumbnail for Everybody's so Creative! blog post"
-        srcset="
+    <div class="thumbnail-wrapper">
+        <img
+            class="thumbnail preview"
+            src="data:image/webp;base64, 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"
+            alt="Low-res preview"
+            width="1900"
+            height="1600"
+        />
+        <img
+            class="thumbnail full"
+            srcset="
             ./assets/banner_400x336.webp 400w,
             ./assets/banner_800x673.webp 800w,
             ./assets/banner_1200x1010.webp 1200w,
-            ./assets/banner_1600x1347.webp 1600w,
-        "
-        sizes="(max-width: 80rem) 90vw, 40rem"
-         
-        width="1900" 
-        height="1600" 
-    />
+            ./assets/banner_1600x1347.webp 1600w
+            "
+            sizes="(max-width: 80rem) 90vw, 40rem"
+            loading="lazy"
+            alt="Thumbnail for Everybody's so Creative! blog post"
+            width="1900"
+            height="1600"
+        />
+    </div>
 
     <header>
         <h1>Everybody's so Creative!</h1>

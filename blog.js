@@ -33,3 +33,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   videos.forEach(v => observer.observe(v));
 });
+
+/*
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("img.blur-up").forEach(img => {
+    const realSrcSet = img.dataset.srcset;
+    const highRes = new Image();
+    highRes.srcset = realSrcSet;
+    highRes.sizes = img.sizes;
+
+    highRes.onload = () => {
+      img.srcset = realSrcSet;
+      img.classList.add("loaded");
+    };
+  });
+});
+*/

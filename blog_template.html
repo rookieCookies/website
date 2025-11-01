@@ -29,6 +29,14 @@
     </script>
 
     <script src="../../blog.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".thumbnail.full").forEach(img => {
+                if (img.complete) img.classList.add("loaded");
+                else img.addEventListener("load", () => img.classList.add("loaded"));
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="text-body">
@@ -55,20 +63,30 @@
         <span><time itemprop="datePublished" datetime="<!-- expand-iso-date -->"><!-- expand-date --></time> | <span itemprop="author">by me</span></span>
         <span class="read-time"><!-- expand-read-time --> min. read</span>
     </div>
-    
 
-    <img loading="eager" class="thumbnail" alt="Thumbnail for <!-- expand-title --> blog post"
-        srcset="
+    <div class="thumbnail-wrapper">
+        <img
+            class="thumbnail preview"
+            src="data:image/webp;base64, <!-- expand-blurbase64 -->"
+            alt="Low-res preview"
+            width="1900"
+            height="1600"
+        />
+        <img
+            class="thumbnail full"
+            srcset="
             ./assets/banner_400x336.webp 400w,
             ./assets/banner_800x673.webp 800w,
             ./assets/banner_1200x1010.webp 1200w,
-            ./assets/banner_1600x1347.webp 1600w,
-        "
-        sizes="(max-width: 80rem) 90vw, 40rem"
-         
-        width="1900" 
-        height="1600" 
-    />
+            ./assets/banner_1600x1347.webp 1600w
+            "
+            sizes="(max-width: 80rem) 90vw, 40rem"
+            loading="lazy"
+            alt="Thumbnail for <!-- expand-title --> blog post"
+            width="1900"
+            height="1600"
+        />
+    </div>
 
     <header>
         <h1><!-- expand-title --></h1>
