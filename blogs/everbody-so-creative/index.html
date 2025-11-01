@@ -9,7 +9,7 @@
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": "Everybody's so Creative!",
-            "image": "https://daymare.net/blogs/everbody-so-creative/assets/thumbnail_1200x1010.webp",
+            "image": "https://daymare.net/blogs/everbody-so-creative/assets/banner_1200x1010.webp",
             "author": {
                 "@type": "Person",
                 "name": "Todaymare"
@@ -30,16 +30,14 @@
 
     <script src="../../blog.js" defer></script>
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".thumbnail.full").forEach(img => {
-        if (img.complete) img.classList.add("loaded");
-        else img.addEventListener("load", () => img.classList.add("loaded"));
-    });
-    });
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".thumbnail.full").forEach(img => {
+                if (img.complete) img.classList.add("loaded");
+                else img.addEventListener("load", () => img.classList.add("loaded"));
+            });
+        });
     </script>
-</head>
-<body>
-    <div class="text-body">
+
 
     <meta name="description" content="After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.">
     <meta name="author" content="Todaymare">
@@ -49,14 +47,18 @@
     <meta property="og:description" content="After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://daymare.net/blogs/everbody-so-creative/">
-    <meta property="og:image" content="https://daymare.net/blogs/everbody-so-creative/assets/thumbnail_1200x1010.webp">
+    <meta property="og:image" content="https://daymare.net/blogs/everbody-so-creative/assets/banner_1200x1010.webp">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Everybody's so Creative!">
     <meta name="twitter:description" content="After 4 years with Rust, I love the language – but I’m starting to think the ecosystem has an abstraction addiction. Or: why every Rust crate feels like a research paper on abstraction.">
-    <meta name="twitter:image" content="https://daymare.net/blogs/everbody-so-creative/assets/thumbnail_1200x1010.webp">
+    <meta name="twitter:image" content="https://daymare.net/blogs/everbody-so-creative/assets/banner_1200x1010.webp">
 
     <link rel="canonical" href="https://daymare.net/blogs/everbody-so-creative/">
+
+</head>
+<body>
+    <div class="text-body">
 
 
     <div class="meta" itemscope itemtype="https://schema.org/BlogPosting">
