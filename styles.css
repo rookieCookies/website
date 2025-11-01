@@ -11,7 +11,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url('/fonts/DancingScript-Bold.ttf') format('truetype');
+  src: url('/fonts/DancingScript-Bold-subset.woff2') format('woff2');
 
 }
 
@@ -39,6 +39,8 @@ hr {
     font-family: 'Dancing Script', cursive;
     font-size: 3rem;
     margin-bottom: 0rem;
+    line-height: 90%;
+
 }
 
 .hero {
